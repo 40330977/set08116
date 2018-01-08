@@ -10,17 +10,9 @@ effect eff;
 target_camera cam;
 
 bool load_content() {
-  // *********************************
-  // Set geometry type to quads
-
-  // *********************************
-  // Create quad data
-  // Positions
+	geom.set_type(GL_QUADS);
   vector<vec3> positions{
-      // *********************************
-      // Add the four positions of the quad corners here
-
-      // *********************************
+     vec3(-1.0f,1)
   };
   // Colours
   vector<vec4> colours{vec4(1.0f, 0.0f, 0.0f, 1.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f),
