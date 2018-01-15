@@ -47,5 +47,36 @@ int main() {
 
 	vec4 r = 5.0f*x;
 	vec4 s = y / 5.0f;
+
+	float lenx = length(x);
+	float lenv = length(v);
+	float lenu = length(u);
+
+	vec4 norx = normalize(x);
+	vec3 norv = normalize(v);
+	vec2 noru = normalize(u);
+
+	float dot2 = dot(u, z);
+	float dot3 = dot(v, w);
+	float dot4 = dot(x, y);
+
+	vec2 pro2 = proj(u, z);
+	vec3 pro3 = proj(v, w);
+	vec4 pro4 = proj(x, y);
+
+	vec3 cro3 = cross(v, w);
+
+	mat4 m1(1.0f);
+	mat4 m2(1.0f);
+
+	mat3 n1(mat4(1.0f));
+
+	mat4 o1 = m1 + m2;
+
+	mat4 p1 = 5.0f*o1;
+
+	mat4 q1 = p1*o1;
+
+	vec4 conv = q1*vec4(p, 1.0f);
 }
 
