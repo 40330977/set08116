@@ -25,11 +25,25 @@ void create_sierpinski(geometry &geom) {
   // Add first colour to the geometry
   colours.push_back(vec4(1.0f, 0.0f, 0.0f, 1.0f));
   // Add random points using distribution
+  vec3 initp = vec3(0.25f, 0.5f, 0.0f);
+  vec3 pointr;
   for (auto i = 1; i < num_points; ++i) {
     // *********************************
     // Add random point
 	  auto n = dist(e);
-	  i = (i-- + n) / 2;
+	  if (n == 0) {
+		  pointr = vec3(-1.0f, -1.0f, 0.0f);
+	  }
+	  else if (n == 1) {
+		  pointr = vec3(0.0f, 1.0f, 0.0f);
+	  }
+	  else {
+		  pointr = vec3(1.0f, -1.0f, 0.0f);
+	  }
+	  
+	  initp = (initp + pointr) / 2.0f; 
+
+	  points.push_back(initp);
 	
     // Add colour - all points red
 	  vector<vec4> colours{ vec4(1.0f, 0.0f, 0.0f, 1.0f)};
