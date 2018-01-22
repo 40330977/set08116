@@ -50,7 +50,7 @@ bool update(float delta_time) {
 bool render() {
   // Bind effect
   renderer::bind(eff);
-  mat4 S;
+  mat4 S = scale(mat4(1.0f), vec3(10.0f,10.0f,10.0f));  
   // *********************************
   // Create scale matrix - use uniform scale based on s
 

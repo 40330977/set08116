@@ -59,10 +59,10 @@ bool update(float delta_time) {
 bool render() {
   // Bind effect
   renderer::bind(eff);
-  mat4 T(1.0f);
+  //mat4 T(1.0f);
   // *********************************
   // Create translation matrix - use pos vector
-
+  mat4 T = translate(mat4(1.0f), pos);
   // *********************************
   // Create MVP matrix
   auto V = cam.get_view();
