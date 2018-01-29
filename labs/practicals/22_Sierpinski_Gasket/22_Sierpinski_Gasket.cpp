@@ -21,6 +21,12 @@ void triangle(const vector<vec3> &points, vector<vec3> &positions, vector<vec4> 
 void divide_triangle(const vector<vec3> &points, unsigned int count, vector<vec3> &positions, vector<vec4> &colours) {
   // *********************************
   // IF we have more divisions to do?
+	count == 0;
+	if (count == 0)
+	{
+		triangle({ vec3(1.0f, -1.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), vec3(-1.0f, -1.0f, 0.0f) }, positions, colours);
+		count++;
+	}
 
     // Calculate new vertices to work on
 
@@ -30,8 +36,7 @@ void divide_triangle(const vector<vec3> &points, unsigned int count, vector<vec3
 
 
 
-
-
+	
   // *********************************
 }
 
