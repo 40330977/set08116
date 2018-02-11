@@ -96,10 +96,11 @@ bool update(float delta_time) {
   bool render() {
   // Bind effect
   renderer::bind(eff);
-  mat4 M, T, R, S;
+  mat4 T, R, S;
   // *********************************
   // Get the model transform from the mesh
-  auto M = m.get_transform().get_transform_matrix();  T = translate(mat4(1.0f), pos);
+  auto M = m.get_transform().get_transform_matrix();
+  T = translate(mat4(1.0f), pos);
   S = scale(mat4(1.0f), vec3(zoom, zoom, zoom));
   R = rotate(mat4(1.0f), 190.0f, vec3(0.0f, 0.0f, 1.0f));
   M = T*(R*S);
