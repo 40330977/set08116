@@ -8,6 +8,7 @@ using namespace glm;
 mesh m;
 effect eff;
 target_camera cam;
+vec3 pos(0.0f, 0.0f, 0.0f);
 
 bool load_content() {
   // Construct geometry object
@@ -58,12 +59,7 @@ bool update(float delta_time) {
   }
   if (glfwGetKey(renderer::get_window(), 'D')) {
 	  m.get_transform().position -= vec3(-5.0f, 0.0f, 0.0f) * delta_time;
-
-
-
-
-
-
+  }
 
   // *********************************
   if (glfwGetKey(renderer::get_window(), GLFW_KEY_UP)) {
@@ -73,19 +69,22 @@ bool update(float delta_time) {
   if (glfwGetKey(renderer::get_window(), GLFW_KEY_DOWN)) {
 	  m.get_transform().rotate(vec3(pi<float>() * delta_time, 0.0f, 0.0f));
   }
+  if (glfwGetKey(renderer::get_window(), GLFW_KEY_LEFT)) {
+	  m.get_transform().rotate(vec3(0.0f, 0.0f, -pi<float>() * delta_time));
+  }
+  if (glfwGetKey(renderer::get_window(), GLFW_KEY_RIGHT)) {
+	  m.get_transform().rotate(vec3(0.0f, 0.0f, pi<float>() * delta_time));
+  }
 
+ 
+  
 
-
-
-
-
-
-
-
-
-
-
-
+  if (glfwGetKey(renderer::get_window(), 'O')) {
+	  m.get_transform().scale += 1.0f;
+  }
+  if (glfwGetKey(renderer::get_window(), 'P')) {
+	  m.get_transform().scale -= 1.0f;
+  }
 
   // *********************************
   // Update the camera
@@ -100,10 +99,6 @@ bool update(float delta_time) {
   // *********************************
   // Get the model transform from the mesh
   auto M = m.get_transform().get_transform_matrix();
-  T = translate(mat4(1.0f), pos);
-  S = scale(mat4(1.0f), vec3(zoom, zoom, zoom));
-  R = rotate(mat4(1.0f), 190.0f, vec3(0.0f, 0.0f, 1.0f));
-  M = T*(R*S);
   // *********************************
   // Create MVP matrix
   auto V = cam.get_view();
@@ -118,6 +113,8 @@ bool update(float delta_time) {
   return true;
 }
 
+ 
+
 void main() {
   // Create application
   app application("25_Transforming_Meshes");
@@ -128,3 +125,4 @@ void main() {
   // Run application
   application.run();
 }
+

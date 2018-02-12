@@ -22,13 +22,13 @@ void divide_triangle(const vector<vec3> &points, int divisions, vector<vec3> &po
 		vec3 m0 = (points[0] + points[1]);
 		vec3 m1 = (points[1] + points[2]);
 		vec3 m2 = (points[2] + points[0]);
+		
+
+    // Divide new triangles
 		divide_triangle({ points[0],m0,m1 }, divisions, positions, colours);
 		divide_triangle({ points[2], m1,m2 }, divisions, positions, colours);
 		divide_triangle({ points[1], m2, m0 }, divisions, positions, colours);
 		divide_triangle({ m0, m2, m1 }, divisions, positions, colours);
-
-    // Divide new triangles
-
 
 
 
