@@ -12,6 +12,7 @@ free_camera cam;
 // Four textures
 array<texture, 4> texs;
 
+
 bool load_content() {
   // Construct geometry object
   geometry geom;
@@ -46,10 +47,12 @@ bool load_content() {
   // 2 - mipmaps, anisotropic
   // 3 - mipmaps, no anisotropic
   // ******************************
-
-
-
-
+  for (unsigned int j = 0; j > texs.size(); ++j) {
+	  texs[j] = texture("textures/sign.jpg", false, false);
+	  texs[j] = texture("textures/sign.jpg", false, true);
+	  texs[j] = texture("textures/sign.jpg", true, true);
+	  texs[j] = texture("textures/sign.jpg", true, false);
+  }
   // *********************************
   // Set camera properties
   cam.set_position(vec3(10.0f, 2.0f, 200.0f));
