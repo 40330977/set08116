@@ -1,5 +1,4 @@
 #version 440
-//uniform vec4 colour;
 // Sampler used to get texture colour
 uniform sampler2D tex;
 
@@ -11,7 +10,7 @@ layout(location = 0) out vec4 out_colour;
 void main() {
   // *********************************
   // Set out colour to sampled texture colour
-  colour = texture(tex, tex_coord);
+  vec4 colour = texture(tex, tex_coord);
   out_colour = colour;
   // *********************************
 }
