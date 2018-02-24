@@ -91,13 +91,13 @@ bool render() {
 
     // *********************************
     // Set material colour- all objects red
-
+	vec4 material_colour = vec4(1.0f, 0.0f, 0.0f, 1.0f);
     // Set light colour- (1.0, 1.0, 1.0, 1.0)
-
+	vec4 light_colour = vec4(1.0, 1.0, 1.0, 1.0);
     // Set light direction - (1.0, 1.0, -1.0)
-
+	vec3 light_dir = vec3(1.0, 1.0, -1.0);
     // Render mesh
-
+	renderer::render(m);
     // *********************************
   }
 

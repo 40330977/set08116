@@ -68,9 +68,9 @@ bool update(float delta_time) {
 
   // *********************************
   // Update the camera
-
+  cam.update(delta_time);
   // If mouse button pressed get ray and check for intersection
-
+  if ((glfwGetKey() & 0x100) != 0)
     // Get the mouse position
 
 

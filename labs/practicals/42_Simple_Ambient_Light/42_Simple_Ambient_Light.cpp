@@ -88,9 +88,9 @@ bool render() {
 
     // *********************************
     // Set material colour - all objects red
-
+	vec4 material_colour = vec4(1.0f, 0.0f, 0.0f, 1.0f);
     // Set ambient intensity - (0.3, 0.3, 0.3, 1.0)
-
+	vec4 ambient_intensity = vec4(0.3, 0.3, 0.3, 1.0);
     // *********************************
     // Render mesh
     renderer::render(m);
