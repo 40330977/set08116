@@ -13,7 +13,7 @@ target_camera cam;
 bool load_content() {
   // *********************************
   // Load in model, models/teapot.obj
-	mesh m(geometry("C:/Users/40330977/Desktop/set08116/labs/res/models/teapot.obj"));
+	m = mesh(geom("C:/Users/40330977/Desktop/set08116/labs/res/models/teapot.obj"));
   // Load in texture, textures/checker.png
 	tex = texture("textures/checker.png");
   // *********************************
