@@ -5,7 +5,7 @@ uniform sampler2D dissolve;
 
 // *********************************
 // Declare dissolve factor value
-uniform sampler2D dissolve_factor;
+uniform float dissolve_factor;
 
 // *********************************
 
@@ -19,8 +19,8 @@ void main() {
   // Get dissolve value from the dissolve texture
   vec4 disolver = texture(dissolve, tex_coord);
   // If r component is greater than dissolve factor, discard
-  if (disolver > dissolve_factor)
-	discard;
+  if (disolver.y > dissolve_factor){
+	discard;}
 
   // *********************************
 
