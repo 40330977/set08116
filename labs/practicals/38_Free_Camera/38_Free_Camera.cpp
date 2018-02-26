@@ -11,13 +11,15 @@ texture tex;
 free_camera cam;
 double cursor_x = 0.0;
 double cursor_y = 0.0;
+double xpos;
+double ypos;
 
 bool initialise() {
   // *********************************
   // Set input mode - hide the cursor
-	glfwSetInputMode(GLFWwindow* window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(renderer::get_window(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
   // Capture initial mouse position
-	glfwGetCursorPos(GLFWwindow *, cursor_x*, cursor_y*);
+	glfwGetCursorPos(renderer::get_window(), &xpos, &ypos);
   // *********************************
   return true;
 }
@@ -79,40 +81,58 @@ bool update(float delta_time) {
 
   double current_x;
   double current_y;
+  double deltax;
+  double deltay;
+  double deltaxr;
+  double deltayr;
+  vec3 direction = vec3(0.0f,0.0f,0.0f);
+  float movespeed = 50.0f;
   // *********************************
   // Get the current cursor position
-  glfwGetCursorPos(GLFWwindow*, cursor_x*, cursor_y*);
+  glfwGetCursorPos(renderer::get_window(), &xpos, &ypos);
   // Calculate delta of cursor positions from last frame
-
-
+  current_x = xpos;
+  current_y = ypos;
+  deltax = current_x - cursor_x;
+  deltay = current_y - cursor_y;
   // Multiply deltas by ratios - gets actual change in orientation
-
-
+  deltaxr = deltax*ratio_width;
+  deltayr = deltay*ratio_height;
   // Rotate cameras by delta
   // delta_y - x-axis rotation
   // delta_x - y-axis rotation
-
+  /*cam.set_pitch(-pi<float>() * deltaxr);
+  cam.set_yaw(-pi<float>() * deltayr);*/
+  cam.rotate(deltaxr, -deltayr);
   // Use keyboard to move the camera - WSAD
+  if (glfwGetKey(renderer::get_window(), 'W')) {
+	  direction =+ vec3(0.0f,0.0f,1.0f);
+  }
 
 
+  if (glfwGetKey(renderer::get_window(), 'A')) {
+	  direction = +vec3(-1.0f, 0.0f, 0.0f);
+  }
 
 
+  if (glfwGetKey(renderer::get_window(), 'S')) {
+	  direction = +vec3(0.0f, 0.0f, -1.0f);;
+  }
 
 
+  if (glfwGetKey(renderer::get_window(), 'D')) {
+	  direction = +vec3(1.0f, 0.0f, 0.0f);
+  }
 
-
-
-
-
-
+  direction = direction*movespeed*delta_time;
 
   // Move camera
-
+  cam.move(direction);
   // Update the camera
-
+  cam.update(delta_time);
   // Update cursor pos
-
-
+  cursor_x = current_x;
+  cursor_y = current_y;
   // *********************************
   return true;
 }
