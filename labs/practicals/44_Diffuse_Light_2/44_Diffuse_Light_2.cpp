@@ -82,7 +82,7 @@ bool render() {
     auto V = cam.get_view();
     auto P = cam.get_projection();
     auto MVP = P * V * M;
-	mat3 N = m.get_transform().get_normal_matrix();
+	
     // Set MVP matrix uniform
     glUniformMatrix4fv(eff.get_uniform_location("MVP"), // Location of uniform
                        1,                               // Number of values - 1 mat4
@@ -91,7 +91,7 @@ bool render() {
 
     // *********************************
     // Set N matrix uniform - remember - 3x3 matrix
-	glUniformMatrix3fv(eff.get_uniform_location("N"), 1, GL_FALSE, value_ptr(N));
+	glUniformMatrix3fv(eff.get_uniform_location("N"), 1, GL_FALSE, value_ptr(m.get_transform().get_normal_matrix()));
     // Set material colour - all objects red
 	vec4 material_colour = vec4(1.0f, 0.0f, 0.0f, 1.0f);
 	glUniform4fv(eff.get_uniform_location("material_colour"), 1, value_ptr(material_colour));
@@ -100,7 +100,7 @@ bool render() {
 	glUniform4fv(eff.get_uniform_location("light_colour"), 1, value_ptr(light_colour));
     // Set light direction - (1.0, 1.0, -1.0)
 	vec3 light_dir = vec3(1.0f, 1.0f, -1.0f);
-	glUniform4fv(eff.get_uniform_location("light_dir"), 1, value_ptr(light_dir));
+	glUniform3fv(eff.get_uniform_location("light_dir"), 1, value_ptr(light_dir));
     // *********************************
     // Render mesh
     renderer::render(m);

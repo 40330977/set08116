@@ -24,7 +24,8 @@ void main() {
   // Calculate position
   gl_Position = MVP * vec4(position, 1.0);
   // Calculate diffuse component - use transformed normal
-  mat3 transformed_normal = N * normal;
+  
+  vec3 transformed_normal = N * normal;
   // *********************************
 
   // Calculate k
