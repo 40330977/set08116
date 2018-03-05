@@ -92,6 +92,8 @@ bool render() {
     // Set ambient intensity - (0.3, 0.3, 0.3, 1.0)
 	vec4 ambient_intensity = vec4(0.3f, 0.3f, 0.3f, 1.0f);
     // *********************************
+	glUniform4fv(eff.get_uniform_location("material_colour"), 1, value_ptr(material_colour));
+	glUniform4fv(eff.get_uniform_location("ambient_intensity"), 1, value_ptr(ambient_intensity));
     // Render mesh
     renderer::render(m);
   }
