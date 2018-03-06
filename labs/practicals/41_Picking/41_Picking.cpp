@@ -72,13 +72,17 @@ bool update(float delta_time) {
   // If mouse button pressed get ray and check for intersection
   if ((glfwGetKey() & 0x100) != 0)
     // Get the mouse position
-
+	  double mouse_X;
+  double mouse_Y;
+  glfwGetCursorPos(renderer::get_window(), &mouse_X, &mouse_Y);
 
 
     // Origin and direction of the ray
-
+  glm::vec3 origin;
+  glm::vec3 direction;
 
     // Convert mouse position to ray
+  screen_pos_to_world_ray(mouse_X, mouse_Y, renderer::get_screen_width(), renderer::get_screen_height(), cam.get_view(), cam.get_projection(), origin, direction);
 
 
     // *********************************
