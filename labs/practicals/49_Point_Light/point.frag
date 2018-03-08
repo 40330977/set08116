@@ -50,16 +50,16 @@ void main() {
   // Now use standard phong shading but using calculated light colour and direction
   // - note no ambient
    // Calculate diffuse component
-  float k = max(dot(transformed_normal, L), 0.0);
+  float k = max(dot(transformed_normal, light_dir), 0.0);
   // Calculate diffuse
-  vec4 diffuse = k * (mat.diffuse_reflection * light.light_colour);
+  vec4 diffuse = k * (mat.diffuse_reflection * LC);
   // Calculate view direction
   vec3 view_dir = normalize(eye_pos - position);
   // Calculate half vector
-   vec3 halfer = normalize(view_dir+L);
+   vec3 halfer = normalize(view_dir+light_dir);
   // Calculate specular component
   float l = pow(max(dot(transformed_normal, halfer), 0.0),mat.shininess);
-  vec4 specular = l * light.light_colour * mat.specular_reflection;
+  vec4 specular = l * LC * mat.specular_reflection;
   // Sample texture
    vec4 tex_colour = texture(tex, tex_coord);
   // Calculate primary colour component
