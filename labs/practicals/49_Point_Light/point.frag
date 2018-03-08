@@ -18,7 +18,7 @@ struct material {
 };
 
 // Point light for the scene
-uniform point_light point;
+uniform point_light light;
 // Material for the object
 uniform material mat;
 // Eye position
@@ -41,22 +41,22 @@ void main() {
   // Get distance between point light and vertex
   vec3 L = light.position - position;
   // Calculate attenuation factor
-  vec3 Att = 1/(constant + linear*L + quadratic*L*L);
+  vec3 Att = 1/(light.constant + light.linear*L + light.quadratic*L*L);
   // Calculate light colour
-  vec3 LC = Att*light.light_colour;
+  vec4 LC = vec4(Att,0.0)*light.light_colour;
 
   // Calculate light dir
   vec3 light_dir = light.position - transformed_normal;
   // Now use standard phong shading but using calculated light colour and direction
   // - note no ambient
    // Calculate diffuse component
-  float k = max(dot(transformed_normal, light.light_dir), 0.0);
+  float k = max(dot(transformed_normal, L), 0.0);
   // Calculate diffuse
   vec4 diffuse = k * (mat.diffuse_reflection * light.light_colour);
   // Calculate view direction
   vec3 view_dir = normalize(eye_pos - position);
   // Calculate half vector
-   vec3 halfer = normalize(view_dir+light.light_dir);
+   vec3 halfer = normalize(view_dir+L);
   // Calculate specular component
   float l = pow(max(dot(transformed_normal, halfer), 0.0),mat.shininess);
   vec4 specular = l * light.light_colour * mat.specular_reflection;
