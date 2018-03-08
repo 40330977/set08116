@@ -215,23 +215,24 @@ bool render() {
                        value_ptr(MVP));                 // Pointer to matrix data
     // *********************************
     // Set M matrix uniform
-
+	glUniformMatrix4fv(eff.get_uniform_location("M"), 1, GL_FALSE, value_ptr(M));
     // Set N matrix uniform - remember - 3x3 matrix
-
+	glUniformMatrix3fv(eff.get_uniform_location("N"), 1, GL_FALSE, value_ptr(m.get_transform().get_normal_matrix()));
     // Bind material
-
+	renderer::bind(m.get_material(), "mat");
     // Bind point lights
-
-    // Bind spot lights
-
-    // Bind texture
-
-    // Set tex uniform
-
-    // Set eye position- Get this from active camera
-
-    // Render mesh
-
+	renderer::bind(points, "points");
+	// Bind spot lights
+	renderer::bind(spots, "spots");
+	// Bind texture
+	renderer::bind(tex, 0);
+	// Set tex uniform
+	glUniform1i(eff.get_uniform_location("tex"), 0);
+	// Set eye position- Get this from active camera
+	vec3 eye_pos = cam.get_position();
+	glUniform3fv(eff.get_uniform_location("eye_pos"), 1, value_ptr(eye_pos));
+	// Render mesh
+	renderer::render(m);
     // *********************************
 
     // Render mesh
