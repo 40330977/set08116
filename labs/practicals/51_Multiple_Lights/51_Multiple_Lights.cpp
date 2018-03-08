@@ -119,48 +119,48 @@ bool load_content() {
   // Spot 0, Position (-25, 10, -15)
   // Green, Direction (1, -1, -1) normalized
   // 20 range,0.5 power
-
-
-
-
-
+  spots[0].set_position(vec3(-25.0f, 10.0f, -15.0f));
+  spots[0].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
+  spots[0].set_direction(normalize(vec3(1.0f, -1.0f, -1.0f)));
+  spots[0].set_range(20.0f);
+  spots[0].set_power(0.5f);
   // Spot 1,Position (-25, 10, -35)
   // Green,Direction (1, -1, 1) normalized
   // 20 range,0.5 power
-
-
-
-
-
+  spots[1].set_position(vec3(-25.0f, 10.0f, -35.0f));
+  spots[1].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
+  spots[1].set_direction(normalize(vec3(1.0f, -1.0f, -1.0f)));
+  spots[1].set_range(20.0f);
+  spots[1].set_power(0.5f);
   // Spot 2,Position (-10, 10, -15)
   // Green,Direction (-1, -1, -1) normalized
   // 20 range,0.5 power
-
-
-
-
-
+  spots[2].set_position(vec3(-10.0f, 10.0f, -15.0f));
+  spots[2].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
+  spots[2].set_direction(normalize(vec3(-1.0f, -1.0f, -1.0f)));
+  spots[2].set_range(20.0f);
+  spots[2].set_power(0.5f);
   // Spot 3,Position (-10, 10, -35)
   // Green,Direction (-1, -1, 1) normalized
   // 20 range,0.5 power
-
-
-
-
-
+  spots[3].set_position(vec3(-10.0f, 10.0f, -15.0f));
+  spots[3].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
+  spots[3].set_direction(normalize(vec3(-1.0f, -1.0f, 1.0f)));
+  spots[3].set_range(20.0f);
+  spots[3].set_power(0.5f);
   // Spot 4,Position (-17.5, 15, -25)
   // Blue,Direction (0, -1, 0)
   // 30 range,1.0 power
-
-
-
-
-
+  spots[4].set_position(vec3(-17.5f, 15.0f, -25.0f));
+  spots[4].set_light_colour(vec4(0.0f, 0.0f, 1.0f, 1.0f));
+  spots[4].set_direction(normalize(vec3(0.0f, -1.0f, 0.0f)));
+  spots[4].set_range(30.0f);
+  spots[4].set_power(1.0f);
   // Load in shaders
-
-
+  eff.add_shader("51_Multiple_lights/multi-light.vert", GL_VERTEX_SHADER);
+  eff.add_shader("51_Multiple_lights/multi-light.frag", GL_FRAGMENT_SHADER);
   // Build effect
-
+  eff.build();
   // *********************************
   // Set camera properties
   cam.set_position(vec3(50.0f, 10.0f, 50.0f));
@@ -208,23 +208,24 @@ bool render() {
                        value_ptr(MVP));                 // Pointer to matrix data
     // *********************************
     // Set M matrix uniform
-
+	glUniformMatrix4fv(eff.get_uniform_location("M"), 1, GL_FALSE, value_ptr(M));
     // Set N matrix uniform - remember - 3x3 matrix
-
+	glUniformMatrix3fv(eff.get_uniform_location("N"), 1, GL_FALSE, value_ptr(m.get_transform().get_normal_matrix()));
     // Bind material
-
+	renderer::bind(m.get_material(), "mat");
     // Bind point lights
-
+	renderer::bind(points, "points");
     // Bind spot lights
-
+	renderer::bind(spots, "spots");
     // Bind texture
-
+	renderer::bind(tex, 0);
     // Set tex uniform
-
+	glUniform1i(eff.get_uniform_location("tex"), 0);
     // Set eye position- Get this from active camera
-
+	vec3 eye_pos = cam.get_position();
+	glUniform3fv(eff.get_uniform_location("eye_pos"), 1, value_ptr(eye_pos));
     // Render mesh
-
+	renderer::render(m);
     // *********************************
   }
 

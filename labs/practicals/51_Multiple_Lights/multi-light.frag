@@ -42,7 +42,7 @@ uniform sampler2D tex;
 // Incoming position
 layout(location = 0) in vec3 position;
 // Incoming normal
-layout(location = 1) in vec3 normal;
+layout(location = 1) in vec3 transformed_normal;
 // Incoming texture coordinate
 layout(location = 2) in vec2 tex_coord;
 
@@ -54,17 +54,33 @@ vec4 calculate_point(in point_light point, in material mat, in vec3 position, in
                      in vec4 tex_colour) {
   // *********************************
   // Get distance between point light and vertex
-
+  vec3 L = point.position - position;
   // Calculate attenuation factor
-
+  vec3 Att = 1/(point.constant + point.linear*L + point.quadratic*L*L);
   // Calculate light colour
-
+  vec4 LC = vec4(Att,0.0)*point.light_colour;
 
   // Calculate light dir
-
+  vec3 light_dir = point.position - transformed_normal;
   // Now use standard phong shading but using calculated light colour and direction
   // - note no ambient
 
+  // Calculate diffuse component
+  float k = max(dot(transformed_normal, light_dir), 0.0);
+  // Calculate diffuse
+  vec4 diffuse = k * (mat.diffuse_reflection * LC);
+  
+  // Calculate half vector
+   vec3 halfer = normalize(view_dir+light_dir);
+  // Calculate specular component
+  float l = pow(max(dot(transformed_normal, halfer), 0.0),mat.shininess);
+  vec4 specular = l * LC * mat.specular_reflection;
+  
+  // Calculate primary colour component
+  vec4 primary = mat.emissive + diffuse;
+  // Calculate final colour - remember alpha
+  colour = primary*tex_colour + specular;
+  colour.a = 1.0;
 
 
 
@@ -79,18 +95,34 @@ vec4 calculate_spot(in spot_light spot, in material mat, in vec3 position, in ve
                     in vec4 tex_colour) {
   // *********************************
   // Calculate direction to the light
-
+  vec3 light_dirs = spot.position - transformed_normal;
   // Calculate distance to light
-
+  vec3 Ls = spot.position - position;
   // Calculate attenuation value
-
+  vec3 Atts = 1/(spot.constant + spot.linear*Ls + spot.quadratic*Ls*Ls);
   // Calculate spot light intensity
 
   // Calculate light colour
-
+   vec4 LCs = vec4(Atts,0.0)*spot.light_colour*pow(max(dot(spot.direction,Ls),0.0),spot.power);
   // Now use standard phong shading but using calculated light colour and direction
   // - note no ambient
 
+  // Calculate diffuse component
+  float ks = max(dot(transformed_normal, light_dirs), 0.0);
+  // Calculate diffuse
+  vec4 diffuse = ks * (mat.diffuse_reflection * LCs);
+  
+  // Calculate half vector
+   vec3 halfers = normalize(view_dir+light_dirs);
+  // Calculate specular component
+  float l = pow(max(dot(transformed_normal, halfers), 0.0),mat.shininess);
+  vec4 speculars = l * LCs * mat.specular_reflection;
+  
+  // Calculate primary colour component
+  vec4 primarys = mat.emissive + diffuse;
+  // Calculate final colour - remember alpha
+  colour = primarys*tex_colour + speculars;
+  colour.a = 1.0;
 
 
 
@@ -104,14 +136,19 @@ void main() {
   colour = vec4(0.0, 0.0, 0.0, 1.0);
   // *********************************
   // Calculate view direction
-
+  vec3 view_dir = normalize(eye_pos - position);
   // Sample texture
-
+  vec4 tex_colour = texture(tex, tex_coord);
   // Sum point lights
-
+  for (int i = 0; i < 4; ++ i )
+ colour += calculate_point ( points [ i ] , mat , position , transformed_normal , 
+ view_dir , tex_colour ) ;
 
 
   // Sum spot lights
+  for (int j = 0; j < 5; ++ j )
+ colour += calculate_spot ( spots [ j ] , mat , position , transformed_normal , 
+ view_dir , tex_colour ) ;
 
 
 
