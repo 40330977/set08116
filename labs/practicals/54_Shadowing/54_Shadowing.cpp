@@ -12,11 +12,13 @@ texture tex;
 target_camera cam;
 spot_light spot;
 shadow_map shadow;
+int width, height;
 
 bool load_content() {
   // *********************************
   // Create shadow map- use screen size
-
+	glfwGetFramebufferSize(renderer::get_window(), &width, &height);
+	shadow = shadow_map(width, height);
   // Create plane mesh
 
   // Create "teapot" mesh by loading in models/teapot.obj
