@@ -20,13 +20,13 @@ bool load_content() {
 	glfwGetFramebufferSize(renderer::get_window(), &width, &height);
 	shadow = shadow_map(width, height);
   // Create plane mesh
-
+	meshes["plane"] = mesh(geometry_builder::create_plane());
   // Create "teapot" mesh by loading in models/teapot.obj
-
+	meshes["teapot"] = mesh(geometry("C:/Users/40330977/Desktop/set08116/labs/res/models/teapot.obj"));
   // Translate Teapot(0,4,0)
-
+	meshes["teapot"].get_transform().translate(vec3(0.0f, 4.0f, 0.0f));
   // Scale the teapot - (0.1, 0.1, 0.1)
-
+	meshes["teapot"].get_transform().scale = (vec3(0.1f, 0.1f, 0.1f));
   // *********************************
 
   // Load texture
@@ -100,9 +100,9 @@ bool update(float delta_time) {
 
   // *********************************
   // Update the shadow map light_position from the spot light
-
+  shadow.light_position = spot.get_position();
   // do the same for light_dir property
-
+  shadow.light_dir = spot.get_direction();
   // *********************************
 
   // Press s to save
@@ -115,11 +115,11 @@ bool update(float delta_time) {
 bool render() {
   // *********************************
   // Set render target to shadow map
-
-  // Clear depth buffer bit
-
-  // Set face cull mode to front
-
+	renderer::set_render_target(shadow);
+	// Clear depth buffer bit
+	glClear(GL_DEPTH_BUFFER_BIT);
+	// Set face cull mode to front
+	glCullFace(GL_FRONT);
   // *********************************
 
   // We could just use the Camera's projection, 
@@ -136,7 +136,7 @@ bool render() {
     auto M = m.get_transform().get_transform_matrix();
     // *********************************
     // View matrix taken from shadow map
-
+	auto V = shadow.get_view();
     // *********************************
     auto MVP = LightProjectionMat * V * M;
     // Set MVP matrix uniform
@@ -148,10 +148,9 @@ bool render() {
     renderer::render(m);
   }
   // *********************************
-  // Set render target back to the screen
-
+  renderer::set_render_target();
   // Set face cull mode to back
-
+  glCullFace(GL_BACK);
   // *********************************
 
   // Bind shader
@@ -178,29 +177,34 @@ bool render() {
     // *********************************
     // Set lightMVP uniform, using:
      //Model matrix from m
-
+	auto lM = M;
     // viewmatrix from the shadow map
-
+	auto lV = shadow.get_view();
     // Multiply together with LightProjectionMat
-
+	auto lP = cam.get_projection();
+	auto lightMVP = lP*lV*lM;
     // Set uniform
-
+	glUniformMatrix4fv(main_eff.get_uniform_location("lightMVP"), // Location of uniform
+		1,                                    // Number of values - 1 mat4
+		GL_FALSE,                             // Transpose the matrix?
+		value_ptr(lightMVP));
     // Bind material
-
+	renderer::bind(m.get_material(), "mat");
     // Bind spot light
-
+	renderer::bind(spot, "spot");
     // Bind texture
-
+	renderer::bind(tex, 0);
     // Set tex uniform
-
+	glUniform1i(main_eff.get_uniform_location("tex"), 0);
     // Set eye position
-
+	vec3 eye_pos = cam.get_position();
+	glUniform3fv(main_eff.get_uniform_location("eye_pos"), 1, value_ptr(eye_pos));
     // Bind shadow map texture - use texture unit 1
-
+	renderer::bind(shadow_eff, 1);
     // Set the shadow_map uniform
-
+	glUniform1i(main_eff.get_uniform_location("shadow"), 1);
     // Render mesh
-
+	renderer render(m);
     // *********************************
   }
 
