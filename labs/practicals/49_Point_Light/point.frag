@@ -39,11 +39,11 @@ layout(location = 0) out vec4 colour;
 void main() {
   // *********************************
   // Get distance between point light and vertex
-  vec3 L = light.position - position;
+  float L = length(light.position - position);
   // Calculate attenuation factor
-  vec3 Att = 1/(light.constant + light.linear*L + light.quadratic*L*L);
+  float Att = 1.0/(light.constant + light.linear*L + light.quadratic*L*L);
   // Calculate light colour
-  vec4 LC = vec4(Att,0.0)*light.light_colour;
+  vec4 LC = Att*light.light_colour;
 
   // Calculate light dir
   vec3 light_dir = light.position - transformed_normal;

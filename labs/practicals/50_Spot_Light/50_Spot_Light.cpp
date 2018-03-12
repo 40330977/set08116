@@ -52,6 +52,12 @@ bool load_content() {
   meshes["box"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
   meshes["box"].get_material().set_shininess(25.0f);
 
+  meshes["plane"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+  meshes["plane"].get_material().set_diffuse(vec4(1.0f, 0.0f, 0.0f, 1.0f));
+  meshes["plane"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+  meshes["plane"].get_material().set_shininess(25.0f);
+
+
   // Green tetra
   meshes["tetra"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
   meshes["tetra"].get_material().set_diffuse(vec4(0.0f, 1.0f, 0.0f, 1.0f));
@@ -89,7 +95,7 @@ bool load_content() {
   meshes["torus"].get_material().set_shininess(25.0f);
 
   // *********************************
-
+  
   // Load texture
   tex = texture("textures/checker.png");
 
@@ -100,7 +106,7 @@ bool load_content() {
   // Light colour white
   light.set_light_colour(vec4(1.0f, 1.0f, 1.0f, 1.0f));
   // Light direction to forward and down (normalized)
-  light.set_direction(normalize(vec3(0.0f, 1.0f, 1.0f)));
+  light.set_direction(normalize(vec3(0.0f, -1.0f, -1.0f)));
   // Set range to 20
   light.set_range(20.0f);
   // Set power to 1
@@ -123,10 +129,10 @@ bool load_content() {
 bool update(float delta_time) {
   // Range of the spot light
   static float range = 20.0f;
-  vec3 posmov = vec3(0.0f, 0.0f, 0.0f);
+  static vec3 posmov = vec3(0.0f, 0.0f, 0.0f);
   // *********************************
 
-
+  
 
 
 
@@ -139,17 +145,17 @@ bool update(float delta_time) {
 
   // WSAD to move point light
   if (glfwGetKey(renderer::get_window(), 'W')) {
-	  posmov -= vec3(0.0f, 0.0f, 5.0f);
+	  posmov -= vec3(0.0f, 0.0f, 5.0f)*delta_time;
   }
   // *********************************
   if (glfwGetKey(renderer::get_window(), 'S')) {
-	  posmov -= vec3(0.0f, 0.0f, -5.0f);
+	  posmov -= vec3(0.0f, 0.0f, -5.0f)*delta_time;
   }
   if (glfwGetKey(renderer::get_window(), 'A')) {
-	  posmov -= vec3(5.0f, 0.0f, 0.0f);
+	  posmov -= vec3(5.0f, 0.0f, 0.0f)*delta_time;
   }
   if (glfwGetKey(renderer::get_window(), 'D')) {
-	  posmov -= vec3(-5.0f, 0.0f, 0.0f);
+	  posmov -= vec3(-5.0f, 0.0f, 0.0f)*delta_time;
   }
   // O and P to change range
   if (glfwGetKey(renderer::get_window(), 'O')) {

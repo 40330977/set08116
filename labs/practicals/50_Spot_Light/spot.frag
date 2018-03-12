@@ -41,15 +41,15 @@ layout(location = 0) out vec4 colour;
 void main() {
   // *********************************
   // Calculate direction to the light
-   vec3 light_dir = light.position - transformed_normal;
+   vec3 light_dir = normalize(light.position - position);
   // Calculate distance to light
-  vec3 L = light.position - position;
+  float L = length(light.position - position);
   // Calculate attenuation value
-  vec3 Att = 1/(light.constant + light.linear*L + light.quadratic*L*L);
+  float Att = light.constant + light.linear*L + light.quadratic*L*L;
   // Calculate spot light intensity
-
+  float Light_intensity = pow(max(dot((-1.0*light.direction),light_dir),0.0),light.power);
   // Calculate light colour
-  vec4 LC = vec4(Att,0.0)*light.light_colour*pow(max(dot(light.direction,L),0.0),light.power);
+  vec4 LC = (Light_intensity*light.light_colour)/Att;
   // Calculate view direction
    vec3 view_dir = normalize(eye_pos - position);
   // Now use standard phong shading but using calculated light colour and direction

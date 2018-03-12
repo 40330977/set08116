@@ -156,7 +156,7 @@ bool update(float delta_time) {
   if (glfwGetKey(renderer::get_window(), 'P')) {
 	  range -= -5.0f*delta_time;
   }
-
+  
 
   // *********************************
 
