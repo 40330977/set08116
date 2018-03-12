@@ -8,35 +8,31 @@ using namespace glm;
 geometry geom;
 effect eff;
 target_camera cam;
-//Note: This lab may not Run for you.
-//This will be explained in the practical.
+
 bool load_content() {
-	geom.set_type(GL_QUADS);
-  vector<vec3> positions{
-     vec3(-1.0f,1)
+  // Create triangle data
+  vector<vec3> positions{vec3(0.0f, 1.0f, 0.0f), vec3(-1.0f, -1.0f, 0.0f), vec3(1.0f, -1.0f, 0.0f)
+
   };
   // Colours
-  vector<vec4> colours{vec4(1.0f, 0.0f, 0.0f, 1.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f),
-                       vec4(1.0f, 0.0f, 0.0f, 1.0f)};
+  vector<vec4> colours{vec4(1.0f, 0.0f, 0.0f, 1.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f)};
   // Add to the geometry
   geom.add_buffer(positions, BUFFER_INDEXES::POSITION_BUFFER);
   geom.add_buffer(colours, BUFFER_INDEXES::COLOUR_BUFFER);
 
   // Load in shaders
-  eff.add_shader("shaders/basic.vert", // filename
-                 GL_VERTEX_SHADER);    // type
-  eff.add_shader("shaders/basic.frag", // filename
-                 GL_FRAGMENT_SHADER);  // type
+  eff.add_shader("shaders/basic.vert", GL_VERTEX_SHADER);
+  eff.add_shader("shaders/basic.frag", GL_FRAGMENT_SHADER);
   // Build effect
   eff.build();
 
   // Set camera properties
-  cam.set_position(vec3(10.0f, 10.0f, 10.0f));
+  cam.set_position(vec3(0.0f, 0.0f, 10.0f));
   cam.set_target(vec3(0.0f, 0.0f, 0.0f));
-  auto aspect = static_cast<float>(renderer::get_screen_width()) / static_cast<float>(renderer::get_screen_height());
-  cam.set_projection(quarter_pi<float>(), aspect, 2.414f, 1000.0f);
+  cam.set_projection(quarter_pi<float>(), renderer::get_screen_aspect(), 0.1f, 1000.0f);
   return true;
 }
+
 
 bool update(float delta_time) {
   // Update the camera
@@ -53,10 +49,7 @@ bool render() {
   auto P = cam.get_projection();
   auto MVP = P * V * M;
   // Set MVP matrix uniform
-  glUniformMatrix4fv(eff.get_uniform_location("MVP"), // Location of uniform
-                     1,                               // Number of values - 1 mat4
-                     GL_FALSE,                        // Transpose the matrix?
-                     value_ptr(MVP));                 // Pointer to matrix data
+  glUniformMatrix4fv(eff.get_uniform_location("MVP"), 1, GL_FALSE, value_ptr(MVP));
   // Render geometry
   renderer::render(geom);
   return true;
@@ -64,7 +57,7 @@ bool render() {
 
 void main() {
   // Create application
-  app application("04_Quads_with_Quads");
+  app application("Graphics Coursework");
   // Set load content, update and render methods
   application.set_load_content(load_content);
   application.set_update(update);
