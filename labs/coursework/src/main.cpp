@@ -14,11 +14,108 @@ vector<spot_light> spots(5);
 
 bool load_content() {
   // Create meshes
-	meshes["plane"] = mesh(geometry_builder::create_plane());
+	/*meshes["plane"] = mesh(geometry_builder::create_plane());
 	meshes["box1"] = mesh(geometry_builder::create_box());
 	meshes["box2"] = mesh(geometry_builder::create_box());
 	meshes["disk"] = mesh(geometry_builder::create_disk(20));
+	meshes["cylinder"] = mesh(geometry_builder::create_cylinder(20, 20));*/
+
+	meshes["plane"] = mesh(geometry_builder::create_plane());
+
+	// Create scene
+	meshes["box"] = mesh(geometry_builder::create_box());
+	meshes["tetra"] = mesh(geometry_builder::create_tetrahedron());
+	meshes["pyramid"] = mesh(geometry_builder::create_pyramid());
+	meshes["disk"] = mesh(geometry_builder::create_disk(20));
 	meshes["cylinder"] = mesh(geometry_builder::create_cylinder(20, 20));
+	meshes["sphere"] = mesh(geometry_builder::create_sphere(20, 20));
+	meshes["torus"] = mesh(geometry_builder::create_torus(20, 20, 1.0f, 5.0f));
+
+	// Transform objects
+	meshes["box"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
+	meshes["box"].get_transform().translate(vec3(-10.0f, 2.5f, -30.0f));
+	meshes["tetra"].get_transform().scale = vec3(4.0f, 4.0f, 4.0f);
+	meshes["tetra"].get_transform().translate(vec3(-30.0f, 10.0f, -10.0f));
+	meshes["pyramid"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
+	meshes["pyramid"].get_transform().translate(vec3(-10.0f, 7.5f, -30.0f));
+	meshes["disk"].get_transform().scale = vec3(3.0f, 1.0f, 3.0f);
+	meshes["disk"].get_transform().translate(vec3(-10.0f, 11.5f, -30.0f));
+	meshes["disk"].get_transform().rotate(vec3(half_pi<float>(), 0.0f, 0.0f));
+	meshes["cylinder"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
+	meshes["cylinder"].get_transform().translate(vec3(-25.0f, 2.5f, -25.0f));
+	meshes["sphere"].get_transform().scale = vec3(2.5f, 2.5f, 2.5f);
+	meshes["sphere"].get_transform().translate(vec3(-25.0f, 10.0f, -25.0f));
+	meshes["torus"].get_transform().translate(vec3(-25.0f, 10.0f, -25.0f));
+	meshes["torus"].get_transform().rotate(vec3(half_pi<float>(), 0.0f, 0.0f));
+
+	// Load texture
+	tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
+
+	// Point 0, Position (-25, 5, -15)
+	// Red, 20 range
+	points[0].set_position(vec3(-25.0f, 5.0f, -15.0f));
+	points[0].set_light_colour(vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	points[0].set_range(20.0f);
+	// Point 1, Position (-25, 5, -35)
+	// Red,20 range
+	points[1].set_position(vec3(-25.0f, 5.0f, -35.0f));
+	points[1].set_light_colour(vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	points[1].set_range(20.0f);
+	// Point 2,Position (-10, 5, -15)
+	// Red,20 range
+	points[2].set_position(vec3(-10.0f, 5.0f, -15.0f));
+	points[2].set_light_colour(vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	points[2].set_range(20.0f);
+	// Point 3,Position (-10, 5, -35)
+	// Red,20 range
+	points[3].set_position(vec3(-10.0f, 5.0f, -35.0f));
+	points[3].set_light_colour(vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	points[3].set_range(20.0f);
+	// Spot 0, Position (-25, 10, -15)
+	// Green, Direction (1, -1, -1) normalized
+	// 20 range,0.5 power
+	spots[0].set_position(vec3(-25.0f, 10.0f, -15.0f));
+	spots[0].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	spots[0].set_direction(normalize(vec3(1.0f, -1.0f, -1.0f)));
+	spots[0].set_range(20.0f);
+	spots[0].set_power(0.5f);
+	// Spot 1,Position (-25, 10, -35)
+	// Green,Direction (1, -1, 1) normalized
+	// 20 range,0.5 power
+	spots[1].set_position(vec3(-25.0f, 10.0f, -35.0f));
+	spots[1].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	spots[1].set_direction(normalize(vec3(1.0f, -1.0f, -1.0f)));
+	spots[1].set_range(20.0f);
+	spots[1].set_power(0.5f);
+	// Spot 2,Position (-10, 10, -15)
+	// Green,Direction (-1, -1, -1) normalized
+	// 20 range,0.5 power
+	spots[2].set_position(vec3(-10.0f, 10.0f, -15.0f));
+	spots[2].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	spots[2].set_direction(normalize(vec3(-1.0f, -1.0f, -1.0f)));
+	spots[2].set_range(20.0f);
+	spots[2].set_power(0.5f);
+	// Spot 3,Position (-10, 10, -35)
+	// Green,Direction (-1, -1, 1) normalized
+	// 20 range,0.5 power
+	spots[3].set_position(vec3(-10.0f, 10.0f, -15.0f));
+	spots[3].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	spots[3].set_direction(normalize(vec3(-1.0f, -1.0f, 1.0f)));
+	spots[3].set_range(20.0f);
+	spots[3].set_power(0.5f);
+	// Spot 4,Position (-17.5, 15, -25)
+	// Blue,Direction (0, -1, 0)
+	// 30 range,1.0 power
+	spots[4].set_position(vec3(-17.5f, 15.0f, -25.0f));
+	spots[4].set_light_colour(vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	spots[4].set_direction(normalize(vec3(0.0f, -1.0f, 0.0f)));
+	spots[4].set_range(30.0f);
+	spots[4].set_power(1.0f);
+
+	// Load in shaders
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.vert", GL_VERTEX_SHADER);
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.frag", GL_FRAGMENT_SHADER);
+
   // Build effect
   eff.build();
 
@@ -31,6 +128,22 @@ bool load_content() {
 
 
 bool update(float delta_time) {
+
+	if (glfwGetKey(renderer::get_window(), '1')) {
+		cam.set_position(vec3(50, 10, 50));
+	}
+	if (glfwGetKey(renderer::get_window(), '2')) {
+		cam.set_position(vec3(-50, 10, 50));
+	}
+	if (glfwGetKey(renderer::get_window(), '3')) {
+		cam.set_position(vec3(-50, 10, -50));
+	}
+	if (glfwGetKey(renderer::get_window(), '4')) {
+		cam.set_position(vec3(50, 10, -50));
+	}
+	// Rotate the sphere
+	meshes["sphere"].get_transform().rotate(vec3(0.0f, half_pi<float>(), 0.0f) * delta_time);
+
   // Update the camera
   cam.update(delta_time);
   return true;
