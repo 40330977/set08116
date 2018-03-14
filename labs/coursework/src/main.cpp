@@ -11,6 +11,11 @@ texture tex;
 target_camera cam;
 vector<point_light> points(4);
 //vector<spot_light> spots(5);
+double cursor_x = 0.0;
+double cursor_y = 0.0;
+double xpos;
+double ypos;
+free_camera cam1;
 
 bool load_content() {
   // Create meshes
@@ -51,6 +56,56 @@ bool load_content() {
 	meshes["torus"].get_transform().translate(vec3(-25.0f, 10.0f, -25.0f));
 	meshes["torus"].get_transform().rotate(vec3(half_pi<float>(), 0.0f, 0.0f));
 
+	// - all emissive is black
+	// - all specular is white
+	// - all shininess is 25
+	// Red box
+	meshes["box"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes["box"].get_material().set_diffuse(vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	meshes["box"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes["box"].get_material().set_shininess(25.0f);
+
+	meshes["box1"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes["box1"].get_material().set_diffuse(vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	meshes["box1"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes["box1"].get_material().set_shininess(25.0f);
+
+	// Green tetra
+	meshes["tetra"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes["tetra"].get_material().set_diffuse(vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	meshes["tetra"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes["tetra"].get_material().set_shininess(25.0f);
+
+	// Blue pyramid
+	meshes["pyramid"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes["pyramid"].get_material().set_diffuse(vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	meshes["pyramid"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes["pyramid"].get_material().set_shininess(25.0f);
+
+	// Yellow disk
+	meshes["disk"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes["disk"].get_material().set_diffuse(vec4(1.0f, 1.0f, 0.0f, 1.0f));
+	meshes["disk"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes["disk"].get_material().set_shininess(25.0f);
+
+	// Magenta cylinder
+	meshes["cylinder"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes["cylinder"].get_material().set_diffuse(vec4(1.0f, 0.0f, 1.0f, 1.0f));
+	meshes["cylinder"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes["cylinder"].get_material().set_shininess(25.0f);
+
+	// Cyan sphere
+	meshes["sphere"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes["sphere"].get_material().set_diffuse(vec4(0.0f, 1.0f, 1.0f, 1.0f));
+	meshes["sphere"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes["sphere"].get_material().set_shininess(25.0f);
+
+	// White torus
+	meshes["torus"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes["torus"].get_material().set_diffuse(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes["torus"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes["torus"].get_material().set_shininess(25.0f);
+
 	// Load texture
 	tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
 
@@ -60,9 +115,9 @@ bool load_content() {
 	points[0].set_light_colour(vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	points[0].set_range(10.0f);
 	// Point 1, Position (-25, 5, -35)
-	// blue,20 range
+	// red,20 range
 	points[1].set_position(vec3(-25.0f, 5.0f, -35.0f));
-	points[1].set_light_colour(vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	points[1].set_light_colour(vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	points[1].set_range(20.0f);
 	// Point 2,Position (-10, 5, -15)
 	// green,20 range
@@ -70,9 +125,9 @@ bool load_content() {
 	points[2].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
 	points[2].set_range(20.0f);
 	// Point 3,Position (-10, 5, -35)
-	// white,20 range
+	// green,20 range
 	points[3].set_position(vec3(-10.0f, 5.0f, -35.0f));
-	points[3].set_light_colour(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	points[3].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
 	points[3].set_range(20.0f);
 	
 
@@ -87,11 +142,47 @@ bool load_content() {
   cam.set_position(vec3(0.0f, 0.0f, 10.0f));
   cam.set_target(vec3(0.0f, 0.0f, 0.0f));
   cam.set_projection(quarter_pi<float>(), renderer::get_screen_aspect(), 0.1f, 1000.0f);
+
+  cam1.set_position(vec3(0.0f, 10.0f, 0.0f));
+  cam1.set_target(vec3(0.0f, 0.0f, 0.0f));
+  cam1.set_projection(quarter_pi<float>(), renderer::get_screen_aspect(), 0.1f, 1000.0f);
   return true;
 }
 
 
 bool update(float delta_time) {
+
+	static double ratio_width = quarter_pi<float>() / static_cast<float>(renderer::get_screen_width());
+	static double ratio_height =
+		(quarter_pi<float>() *
+		(static_cast<float>(renderer::get_screen_height()) / static_cast<float>(renderer::get_screen_width()))) /
+		static_cast<float>(renderer::get_screen_height());
+
+	double current_x;
+	double current_y;
+	double deltax;
+	double deltay;
+	double deltaxr;
+	double deltayr;
+	vec3 direction = vec3(0.0f, 0.0f, 0.0f);
+	float movespeed = 50.0f;
+
+	glfwGetCursorPos(renderer::get_window(), &xpos, &ypos);
+	// Calculate delta of cursor positions from last frame
+	current_x = xpos;
+	current_y = ypos;
+	deltax = current_x - cursor_x;
+	deltay = current_y - cursor_y;
+	// Multiply deltas by ratios - gets actual change in orientation
+	deltaxr = deltax*ratio_width;
+	deltayr = deltay*ratio_height;
+	// Rotate cameras by delta
+	// delta_y - x-axis rotation
+	// delta_x - y-axis rotation
+	/*cam.set_pitch(-pi<float>() * deltaxr);
+	cam.set_yaw(-pi<float>() * deltayr);*/
+
+	cam1.rotate(deltaxr, -deltayr);
 
 	if (glfwGetKey(renderer::get_window(), '1')) {
 		cam.set_position(vec3(50, 10, 50));
@@ -106,6 +197,29 @@ bool update(float delta_time) {
 		cam.set_position(vec3(50, 10, -50));
 	}
 
+	
+
+	if (glfwGetKey(renderer::get_window(), 'W')) {
+		direction = +vec3(0.0f, 0.0f, 1.0f);
+	}
+
+
+	if (glfwGetKey(renderer::get_window(), 'A')) {
+		direction = +vec3(-1.0f, 0.0f, 0.0f);
+	}
+
+
+	if (glfwGetKey(renderer::get_window(), 'S')) {
+		direction = +vec3(0.0f, 0.0f, -1.0f);;
+	}
+
+
+	if (glfwGetKey(renderer::get_window(), 'D')) {
+		direction = +vec3(1.0f, 0.0f, 0.0f);
+	}
+
+	direction = direction*movespeed*delta_time;
+
 	//if (glfwGetKey(renderer::get_window(), GLFW_KEY_UP)) {
 		meshes["box"].get_transform().rotate(vec3(0.0f,  -pi<float>() * delta_time,  0.0f ));
 	//}
@@ -117,7 +231,21 @@ bool update(float delta_time) {
 	meshes["sphere"].get_transform().rotate(vec3(0.0f, half_pi<float>(), 0.0f) * delta_time);
 
   // Update the camera
-  cam.update(delta_time);
+  
+	
+
+	if (glfwGetKey(renderer::get_window(), GLFW_KEY_SPACE)) {
+		cam1.move(direction);
+		// Update the camera
+		cam1.update(delta_time);
+
+	}
+	else { cam.update(delta_time); }
+
+	// Update cursor pos
+	cursor_x = current_x;//used without innitialised
+	cursor_y = current_y;
+  
   return true;
 }
 
@@ -129,16 +257,27 @@ bool render() {
 		renderer::bind(eff);
 		// Create MVP matrix
 		auto M = m.get_transform().get_transform_matrix();
+		auto V1 = cam1.get_view();
+		auto P1 = cam1.get_projection();
 		auto V = cam.get_view();
 		auto P = cam.get_projection();
 		auto MVP = P * V * M;
+		auto MVP1 = P1 * V1 * M;
 		// Set MVP matrix uniform
-		glUniformMatrix4fv(eff.get_uniform_location("MVP"), // Location of uniform
-			1,                               // Number of values - 1 mat4
-			GL_FALSE,                        // Transpose the matrix?
-			value_ptr(MVP));                 // Pointer to matrix data
-											 // *********************************
+		if (glfwGetKey(renderer::get_window(), GLFW_KEY_SPACE)) {
+			glUniformMatrix4fv(eff.get_uniform_location("MVP"), // Location of uniform
+				1,                               // Number of values - 1 mat4
+				GL_FALSE,                        // Transpose the matrix?
+				value_ptr(MVP1));                 // Pointer to matrix data
+		}									 // *********************************
 											 // Set M matrix uniform
+
+		else {
+			glUniformMatrix4fv(eff.get_uniform_location("MVP"), // Location of uniform
+				1,                               // Number of values - 1 mat4
+				GL_FALSE,                        // Transpose the matrix?
+				value_ptr(MVP));
+		}
 		glUniformMatrix4fv(eff.get_uniform_location("M"), 1, GL_FALSE, value_ptr(M));
 		// Set N matrix uniform - remember - 3x3 matrix
 		glUniformMatrix3fv(eff.get_uniform_location("N"), 1, GL_FALSE, value_ptr(m.get_transform().get_normal_matrix()));
