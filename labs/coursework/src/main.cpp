@@ -10,7 +10,7 @@ effect eff;
 texture tex;
 target_camera cam;
 vector<point_light> points(4);
-//vector<spot_light> spots(5);
+vector<spot_light> spots(5);
 double cursor_x = 0.0;
 double cursor_y = 0.0;
 double xpos;
@@ -109,6 +109,46 @@ bool load_content() {
 	// Load texture
 	tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
 
+	// Spot 0, Position (-25, 10, -15)
+	// Green, Direction (1, -1, -1) normalized
+	// 20 range,0.5 power
+	spots[0].set_position(vec3(-25.0f, 10.0f, -15.0f));
+	spots[0].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	spots[0].set_direction(normalize(vec3(1.0f, -1.0f, -1.0f)));
+	spots[0].set_range(20.0f);
+	spots[0].set_power(0.5f);
+	// Spot 1,Position (-25, 10, -35)
+	// Green,Direction (1, -1, 1) normalized
+	// 20 range,0.5 power
+	spots[1].set_position(vec3(-25.0f, 10.0f, -35.0f));
+	spots[1].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	spots[1].set_direction(normalize(vec3(1.0f, -1.0f, -1.0f)));
+	spots[1].set_range(20.0f);
+	spots[1].set_power(0.5f);
+	// Spot 2,Position (-10, 10, -15)
+	// Green,Direction (-1, -1, -1) normalized
+	// 20 range,0.5 power
+	spots[2].set_position(vec3(-10.0f, 10.0f, -15.0f));
+	spots[2].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	spots[2].set_direction(normalize(vec3(-1.0f, -1.0f, -1.0f)));
+	spots[2].set_range(20.0f);
+	spots[2].set_power(0.5f);
+	// Spot 3,Position (-10, 10, -35)
+	// Green,Direction (-1, -1, 1) normalized
+	// 20 range,0.5 power
+	spots[3].set_position(vec3(-10.0f, 10.0f, -15.0f));
+	spots[3].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	spots[3].set_direction(normalize(vec3(-1.0f, -1.0f, 1.0f)));
+	spots[3].set_range(20.0f);
+	spots[3].set_power(0.5f);
+	// Spot 4,Position (-17.5, 15, -25)
+	// Blue,Direction (0, -1, 0)
+	// 30 range,1.0 power
+	spots[4].set_position(vec3(-17.5f, 15.0f, -25.0f));
+	spots[4].set_light_colour(vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	spots[4].set_direction(normalize(vec3(0.0f, -1.0f, 0.0f)));
+	spots[4].set_range(30.0f);
+	spots[4].set_power(1.0f);
 	// Point 0, Position (-25, 5, -15)
 	// Red, 20 range
 	points[0].set_position(vec3(-25.0f, 5.0f, -15.0f));
@@ -127,13 +167,14 @@ bool load_content() {
 	// Point 3,Position (-10, 5, -35)
 	// green,20 range
 	points[3].set_position(vec3(-10.0f, 5.0f, -35.0f));
-	points[3].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	points[3].set_light_colour(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	points[3].set_range(20.0f);
+	
 	
 
 	// Load in shaders
-	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/point.vert", GL_VERTEX_SHADER);
-	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/point.frag", GL_FRAGMENT_SHADER);
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.vert", GL_VERTEX_SHADER);
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.frag", GL_FRAGMENT_SHADER);
 
   // Build effect
   eff.build();
@@ -177,10 +218,7 @@ bool update(float delta_time) {
 	deltaxr = deltax*ratio_width;
 	deltayr = deltay*ratio_height;
 	// Rotate cameras by delta
-	// delta_y - x-axis rotation
-	// delta_x - y-axis rotation
-	/*cam.set_pitch(-pi<float>() * deltaxr);
-	cam.set_yaw(-pi<float>() * deltayr);*/
+	
 
 	cam1.rotate(deltaxr, -deltayr);
 
@@ -286,7 +324,7 @@ bool render() {
 		// Bind point lights
 		renderer::bind(points, "points");
 		// Bind spot lights
-		//renderer::bind(spots, "spots");
+		renderer::bind(spots, "spots");
 		// Bind texture
 		renderer::bind(tex, 0);
 		// Set tex uniform
