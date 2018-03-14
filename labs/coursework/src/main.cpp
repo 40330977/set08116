@@ -5,7 +5,11 @@ using namespace std;
 using namespace graphics_framework;
 using namespace glm;
 
-map<string, mesh> meshes;
+std::array<mesh, 3> meshes;
+std::array<texture, 3> textures;
+mesh plane_mesh;
+texture plane_tex;
+//map<string, mesh> meshes;
 effect eff;
 texture tex;
 target_camera cam;
@@ -25,27 +29,35 @@ bool load_content() {
 	meshes["disk"] = mesh(geometry_builder::create_disk(20));
 	meshes["cylinder"] = mesh(geometry_builder::create_cylinder(20, 20));*/
 
-	meshes["plane"] = mesh(geometry_builder::create_plane());
+	plane_mesh = mesh(geometry_builder::create_plane());
 
 	// Create scene
-	meshes["box"] = mesh(geometry_builder::create_box());
-	meshes["box1"] = mesh(geometry_builder::create_box());
-	meshes["tetra"] = mesh(geometry_builder::create_tetrahedron());
-	meshes["pyramid"] = mesh(geometry_builder::create_pyramid());
+	meshes[0] = mesh(geometry_builder::create_sphere(20, 20));
+	meshes[1] = mesh(geometry_builder::create_box());
+	meshes[2] = mesh(geometry_builder::create_torus(20, 20, 1.0f, 5.0f));
+	
+	/*meshes["pyramid"] = mesh(geometry_builder::create_pyramid());
+	meshes["pyramid1"] = mesh(geometry_builder::create_pyramid());
+	meshes["pyramid2"] = mesh(geometry_builder::create_pyramid());
 	meshes["disk"] = mesh(geometry_builder::create_disk(20));
 	meshes["cylinder"] = mesh(geometry_builder::create_cylinder(20, 20));
 	meshes["sphere"] = mesh(geometry_builder::create_sphere(20, 20));
-	meshes["torus"] = mesh(geometry_builder::create_torus(20, 20, 1.0f, 5.0f));
+	meshes["torus"] = mesh(geometry_builder::create_torus(20, 20, 1.0f, 5.0f));*/
 
 	// Transform objects
-	meshes["box"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
+	/*meshes["box"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
 	meshes["box"].get_transform().translate(vec3(10.0f, 2.5f, -30.0f));
 	meshes["box1"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
 	meshes["box1"].get_transform().translate(vec3(-10.0f, 2.5f, -30.0f));
-	meshes["tetra"].get_transform().scale = vec3(4.0f, 4.0f, 4.0f);
-	meshes["tetra"].get_transform().translate(vec3(-30.0f, 10.0f, -10.0f));
+	meshes["box2"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
+	meshes["box2"].get_transform().translate(vec3(30.0f, 2.5f, -30.0f));
+	
 	meshes["pyramid"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
 	meshes["pyramid"].get_transform().translate(vec3(-10.0f, 7.5f, -30.0f));
+	meshes["pyramid1"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
+	meshes["pyramid1"].get_transform().translate(vec3(10.0f, 7.5f, -30.0f));
+	meshes["pyramid2"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
+	meshes["pyramid2"].get_transform().translate(vec3(30.0f, 7.5f, -30.0f));
 	meshes["disk"].get_transform().scale = vec3(3.0f, 1.0f, 3.0f);
 	meshes["disk"].get_transform().translate(vec3(-10.0f, 11.5f, -30.0f));
 	meshes["disk"].get_transform().rotate(vec3(half_pi<float>(), 0.0f, 0.0f));
@@ -54,33 +66,52 @@ bool load_content() {
 	meshes["sphere"].get_transform().scale = vec3(2.5f, 2.5f, 2.5f);
 	meshes["sphere"].get_transform().translate(vec3(-25.0f, 10.0f, -25.0f));
 	meshes["torus"].get_transform().translate(vec3(-25.0f, 10.0f, -25.0f));
-	meshes["torus"].get_transform().rotate(vec3(half_pi<float>(), 0.0f, 0.0f));
+	meshes["torus"].get_transform().rotate(vec3(half_pi<float>(), 0.0f, 0.0f));*/
+	// Move Box One to (0,1,0)
+	meshes[0].get_transform().position += vec3(0.0f, 1.0f, 0.0f);
+	// Move Box Two to (0,0,1)
+	meshes[1].get_transform().position += vec3(0.0f, 1.0f, 2.0f);
+	// Move Box Three to (0,1,0)
+	meshes[2].get_transform().position += vec3(0.0f, 1.0f, 4.0f);
+
 
 	// - all emissive is black
 	// - all specular is white
 	// - all shininess is 25
-	// Red box
-	meshes["box"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	meshes["box"].get_material().set_diffuse(vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	meshes["box"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	meshes["box"].get_material().set_shininess(25.0f);
+	
+	meshes[0].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes[0].get_material().set_diffuse(vec4(1.0f, 0.0f, 1.0f, 1.0f));
+	meshes[0].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes[0].get_material().set_shininess(25.0f);
 
-	meshes["box1"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	meshes["box1"].get_material().set_diffuse(vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	meshes["box1"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	meshes["box1"].get_material().set_shininess(25.0f);
+	meshes[1].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes[1].get_material().set_diffuse(vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	meshes[1].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes[1].get_material().set_shininess(25.0f);
 
-	// Green tetra
-	meshes["tetra"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	meshes["tetra"].get_material().set_diffuse(vec4(0.0f, 1.0f, 0.0f, 1.0f));
-	meshes["tetra"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	meshes["tetra"].get_material().set_shininess(25.0f);
+	meshes[2].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes[2].get_material().set_diffuse(vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	meshes[2].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes[2].get_material().set_shininess(25.0f);
 
-	// Blue pyramid
+	
+	
+
+	/*// Blue pyramid
 	meshes["pyramid"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	meshes["pyramid"].get_material().set_diffuse(vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	meshes["pyramid"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	meshes["pyramid"].get_material().set_shininess(25.0f);
+
+	meshes["pyramid1"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes["pyramid1"].get_material().set_diffuse(vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	meshes["pyramid1"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes["pyramid1"].get_material().set_shininess(25.0f);
+
+	meshes["pyramid2"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes["pyramid2"].get_material().set_diffuse(vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	meshes["pyramid2"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes["pyramid2"].get_material().set_shininess(25.0f);
 
 	// Yellow disk
 	meshes["disk"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
@@ -104,11 +135,13 @@ bool load_content() {
 	meshes["torus"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	meshes["torus"].get_material().set_diffuse(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	meshes["torus"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	meshes["torus"].get_material().set_shininess(25.0f);
+	meshes["torus"].get_material().set_shininess(25.0f);*/
 
 	// Load texture
 	tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
 
+	plane_tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
+	
 	// Spot 0, Position (-25, 10, -15)
 	// Green, Direction (1, -1, -1) normalized
 	// 20 range,0.5 power
@@ -259,14 +292,16 @@ bool update(float delta_time) {
 	direction = direction*movespeed*delta_time;
 
 	//if (glfwGetKey(renderer::get_window(), GLFW_KEY_UP)) {
-		meshes["box"].get_transform().rotate(vec3(0.0f,  -pi<float>() * delta_time,  0.0f ));
+		meshes[0].get_transform().rotate(vec3(0.0f,  -pi<float>() * delta_time,  0.0f ));
 	//}
 	// rotate Box Two on Z axis by delta_time
 	//if (glfwGetKey(renderer::get_window(), GLFW_KEY_UP)) {
-		meshes["box1"].get_transform().rotate(vec3(0.0f, -pi<float>() * delta_time, 0.0f));
+		meshes[1].get_transform().rotate(vec3(0.0f, -pi<float>() * delta_time, 0.0f));
 	//}
+
+		meshes[2].get_transform().rotate(vec3(0.0f, -pi<float>() * delta_time, 0.0f));
 	// Rotate the sphere
-	meshes["sphere"].get_transform().rotate(vec3(0.0f, half_pi<float>(), 0.0f) * delta_time);
+	//meshes["sphere"].get_transform().rotate(vec3(0.0f, half_pi<float>(), 0.0f) * delta_time);
 
   // Update the camera
   
@@ -288,7 +323,73 @@ bool update(float delta_time) {
 }
 
 bool render() {
+
+	renderer::bind(eff);
+	// Get PV
+	const auto PV = cam.get_projection() * cam.get_view();
+	const auto PV1 = cam1.get_projection() * cam1.get_view();
+	// Set the texture value for the shader here
+	glUniform1i(eff.get_uniform_location("tex"), 0);
+	// Find the lcoation for the MVP uniform
+	const auto loc = eff.get_uniform_location("MVP");
+
 	// Render meshes
+	for (size_t i = 0; i < meshes.size(); i++) {
+		// *********************************
+		// SET M to be the usual mesh  transform matrix
+		auto M = meshes[i].get_transform().get_transform_matrix();
+		// *********************************
+		int f = i;
+		// Apply the heirarchy chain
+		for (size_t j = i; j > 0; j--) {
+			M = meshes[j - 1].get_transform().get_transform_matrix() * M;
+		}
+
+
+		// Set MVP matrix uniform
+		if (glfwGetKey(renderer::get_window(), GLFW_KEY_SPACE)) {
+			glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(PV1 * M));
+		}
+		else {
+			glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(PV * M));
+		}
+
+		glUniformMatrix4fv(eff.get_uniform_location("M"), 1, GL_FALSE, value_ptr(M));
+		// Set N matrix uniform - remember - 3x3 matrix
+		glUniformMatrix3fv(eff.get_uniform_location("N"), 1, GL_FALSE, value_ptr(meshes[f].get_transform().get_normal_matrix()));
+		// Bind material
+		renderer::bind(meshes[f].get_material(), "mat");
+		// Bind point lights
+		renderer::bind(points, "points");
+		// Bind spot lights
+		renderer::bind(spots, "spots");
+		// Bind texture
+		//renderer::bind(tex, 0);
+		// Set tex uniform
+		glUniform1i(eff.get_uniform_location("tex"), 0);
+		// Set eye position- Get this from active camera
+		vec3 eye_pos = cam.get_position();
+		glUniform3fv(eff.get_uniform_location("eye_pos"), 1, value_ptr(eye_pos));
+		// Bind texture to renderer
+		renderer::bind(tex, 0);
+		// Render mesh
+		renderer::render(meshes[f]);
+	}
+
+	// Render floor
+	if (glfwGetKey(renderer::get_window(), GLFW_KEY_SPACE)) {
+		glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(PV1 * plane_mesh.get_transform().get_transform_matrix()));
+	}
+	else {
+		glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(PV * plane_mesh.get_transform().get_transform_matrix()));
+	}
+	// Bind floor texture
+	renderer::bind(plane_tex, 0);
+	// Render floor
+	renderer::render(plane_mesh);
+	return true;
+
+	/*// Render meshes
 	for (auto &e : meshes) {
 		auto m = e.second;
 		// Bind effect
@@ -337,7 +438,7 @@ bool render() {
 		// *********************************
 	}
 
-	return true;
+	return true;*/
 }
 
 void main() {
