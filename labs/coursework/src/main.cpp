@@ -5,8 +5,8 @@ using namespace std;
 using namespace graphics_framework;
 using namespace glm;
 
-std::array<mesh, 3> meshes;
-std::array<texture, 3> textures;
+std::array<mesh, 4> meshes;
+//std::array<texture, 3> textures;
 mesh plane_mesh;
 texture plane_tex;
 //map<string, mesh> meshes;
@@ -33,8 +33,9 @@ bool load_content() {
 
 	// Create scene
 	meshes[0] = mesh(geometry_builder::create_sphere(20, 20));
-	meshes[1] = mesh(geometry_builder::create_box());
-	meshes[2] = mesh(geometry_builder::create_torus(20, 20, 1.0f, 5.0f));
+	meshes[1] = mesh(geometry_builder::create_sphere(20, 20));
+	meshes[2] = mesh(geometry_builder::create_sphere(20, 20));
+	meshes[3] = mesh(geometry_builder::create_torus(20, 20, 1.0f, 5.0f));
 	
 	/*meshes["pyramid"] = mesh(geometry_builder::create_pyramid());
 	meshes["pyramid1"] = mesh(geometry_builder::create_pyramid());
@@ -68,11 +69,12 @@ bool load_content() {
 	meshes["torus"].get_transform().translate(vec3(-25.0f, 10.0f, -25.0f));
 	meshes["torus"].get_transform().rotate(vec3(half_pi<float>(), 0.0f, 0.0f));*/
 	// Move Box One to (0,1,0)
-	meshes[0].get_transform().position += vec3(0.0f, 1.0f, 0.0f);
+	meshes[0].get_transform().position += vec3(0.0f, 10.0f, 0.0f);
 	// Move Box Two to (0,0,1)
-	meshes[1].get_transform().position += vec3(0.0f, 1.0f, 2.0f);
+	meshes[1].get_transform().position += vec3(0.0f, -8.0f, 0.0f);
+	//meshes[1].get_transform().rotate(vec3(half_pi<float>(), 0.0f, 0.0f));
 	// Move Box Three to (0,1,0)
-	meshes[2].get_transform().position += vec3(0.0f, 1.0f, 4.0f);
+	meshes[2].get_transform().position += vec3(0.0f, 1.0f, 10.0f);
 
 
 	// - all emissive is black
@@ -90,12 +92,19 @@ bool load_content() {
 	meshes[1].get_material().set_shininess(25.0f);
 
 	meshes[2].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	meshes[2].get_material().set_diffuse(vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	meshes[2].get_material().set_diffuse(vec4(1.0f, 1.0f, 0.0f, 1.0f));
 	meshes[2].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	meshes[2].get_material().set_shininess(25.0f);
 
-	
-	
+	meshes[3].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes[3].get_material().set_diffuse(vec4(1.0f, 1.0f, 0.0f, 1.0f));
+	meshes[3].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes[3].get_material().set_shininess(25.0f);
+
+	plane_mesh.get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	plane_mesh.get_material().set_diffuse(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	plane_mesh.get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	plane_mesh.get_material().set_shininess(25.0f);
 
 	/*// Blue pyramid
 	meshes["pyramid"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
@@ -383,6 +392,7 @@ bool render() {
 	else {
 		glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(PV * plane_mesh.get_transform().get_transform_matrix()));
 	}
+	renderer::bind(plane_mesh.get_material(), "mat");
 	// Bind floor texture
 	renderer::bind(plane_tex, 0);
 	// Render floor
