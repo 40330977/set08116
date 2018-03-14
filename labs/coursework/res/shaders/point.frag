@@ -17,8 +17,8 @@ struct material {
   float shininess;
 };
 
-// Point light for the scene
-uniform point_light light;
+// Point lights being used in the scene
+uniform point_light points[4];
 // Material for the object
 uniform material mat;
 // Eye position
@@ -36,37 +36,59 @@ layout(location = 2) in vec2 tex_coord;
 // Outgoing colour
 layout(location = 0) out vec4 colour;
 
-void main() {
+// Point light calculation
+vec4 calculate_point(in point_light point, in material mat, in vec3 position, in vec3 normal, in vec3 view_dir,
+                     in vec4 tex_colour) {
   // *********************************
   // Get distance between point light and vertex
-  float L = length(light.position - position);
+  float L = length(point.position - position);
   // Calculate attenuation factor
-  float Att = 1.0/(light.constant + light.linear*L + light.quadratic*L*L);
+  float Att = 1/(point.constant + point.linear*L + point.quadratic*L*L);
   // Calculate light colour
-  vec4 LC = Att*light.light_colour;
+  vec4 LC = Att*point.light_colour;
 
   // Calculate light dir
-  vec3 light_dir = light.position - transformed_normal;
+  vec3 light_dir = point.position - transformed_normal;
   // Now use standard phong shading but using calculated light colour and direction
   // - note no ambient
-   // Calculate diffuse component
+
+  // Calculate diffuse component
   float k = max(dot(transformed_normal, light_dir), 0.0);
   // Calculate diffuse
   vec4 diffuse = k * (mat.diffuse_reflection * LC);
-  // Calculate view direction
-  vec3 view_dir = normalize(eye_pos - position);
+  
   // Calculate half vector
    vec3 halfer = normalize(view_dir+light_dir);
   // Calculate specular component
-  float l = pow(max(dot(transformed_normal, halfer), 0.0),mat.shininess);
+ float l = pow(max(dot(transformed_normal, halfer), 0.0),mat.shininess);
   vec4 specular = l * LC * mat.specular_reflection;
-  // Sample texture
-   vec4 tex_colour = texture(tex, tex_coord);
+  
   // Calculate primary colour component
   vec4 primary = mat.emissive + diffuse;
   // Calculate final colour - remember alpha
   colour = primary*tex_colour + specular;
   colour.a = 1.0;
+
+
+
+
+
+  // *********************************
+  return colour;
+}
+
+
+void main() {
+   colour = vec4(0.0, 0.0, 0.0, 1.0);
+  // *********************************
+  // Calculate view direction
+  vec3 view_dir = normalize(eye_pos - position);
+  // Sample texture
+  vec4 tex_colour = texture(tex, tex_coord);
+  // Sum point lights
+  for (int i = 0; i < 4; ++ i )
+ colour += calculate_point ( points [ i ] , mat , position , transformed_normal , 
+ view_dir , tex_colour ) ;
 
 
 
