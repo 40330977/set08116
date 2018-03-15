@@ -28,15 +28,15 @@ vec4 calculate_point(in point_light point, in material mat, in vec3 position, in
 {
 	// *********************************
 	// Get distance between point light and vertex
-	float L = length(light.position - position);
+	float L = length(point.position - position);
 	// Calculate attenuation factor : constant + (linear * d) + (quadratic * d * d)
-	 float Att = (light.constant + light.linear*L + light.quadratic*L*L);
+	 float Att = (point.constant + point.linear*L + point.quadratic*L*L);
 	// Calculate light colour : light_colour / attenuation
-	vec4 LC = light.light_colour/att;
+	vec4 light_colour = point.light_colour/Att;
 	//Set colour alpha to 1.0
-	LC.a = 1.0;
+	light_colour.a = 1.0;
 	// Calculate light dir
-	vec3 light_dir = light.position - transformed_normal;
+	vec3 light_dir = point.position - transformed_normal;
 	// *********************************
 	// Now use standard phong shading but using calculated light colour and direction
 	// - note no ambient

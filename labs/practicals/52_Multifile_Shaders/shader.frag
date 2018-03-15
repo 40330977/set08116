@@ -73,7 +73,7 @@ uniform sampler2D tex;
 // Incoming position
 layout(location = 0) in vec3 position;
 // Incoming normal
-layout(location = 1) in vec3 normal;
+layout(location = 1) in vec3 transformed_normal;
 // Incoming texture coordinate
 layout(location = 2) in vec2 tex_coord;
 
@@ -87,14 +87,17 @@ void main() {
   // Sample texture
   vec4 tex_colour = texture(tex, tex_coord);
   // Calculate directional light colour
-
+  vec4 colcalc = vec4(0.0f,0.0f,0.0f,1.0f);
+ colcalc += calculate_direction ( light , mat , transformed_normal , 
+ view_dir , tex_colour ) ;
   // Sum point lights
 for (int i = 0; i < 4; ++ i )
- colour += calculate_point ( points [ i ] , mat , position , transformed_normal , 
+ colcalc += calculate_point ( points [ i ] , mat , position , transformed_normal , 
  view_dir , tex_colour ) ;
   // Sum spot lights
   for (int j = 0; j < 5; ++ j )
- colour += calculate_spot ( spots [ j ] , mat , position , transformed_normal , 
+ colcalc += calculate_spot ( spots [ j ] , mat , position , transformed_normal , 
  view_dir , tex_colour ) ;
+ colour = colcalc;
   // *********************************
 }

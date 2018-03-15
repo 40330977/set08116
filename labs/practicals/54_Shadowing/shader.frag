@@ -59,7 +59,7 @@ void main() {
   // *********************************
   // Calculate shade factor
 
-  float shade = calculate_shadow(in sampler2D shadow_map, in vec4 light_space_pos);
+  float shade = calculate_shadow(shadow_map, light_space_pos);
   
   //vec3 proj_coords = light_space_pos.xyz/light_space_pos.w;
   //vec3 shadow_tex_coords;
@@ -79,7 +79,7 @@ void main() {
   vec4 tex_colour = texture(tex, tex_coord);
   // Calculate spot light
   //for (int j = 0; j < 5; ++ j )
- colour += calculate_spot ( spot , mat , position , transformed_normal , 
+ colour += calculate_spot ( spot , mat , position , normal , 
  view_dir , tex_colour ) ;
   // Scale colour by shade
   colour = colour*shade;
