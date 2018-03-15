@@ -58,13 +58,22 @@ layout(location = 0) out vec4 colour;
 void main() {
   // *********************************
   // Calculate shade factor
-
+  vec3 proj_coords = light_space_pos.xyz/light_space_pos.w;
+  vec3 shadow_tex_coords;
+  shadow_tex_coords.x = proj_coords.x*0.5 + 0.5;
+  shadow_tex_coords.y = proj_coords.y*0.5 + 0.5;
+  if (shadow_tex_coords.xy > 1){float shade = 1.0;}
+  else{
+  shadow_tex_coords.z = proj_coords.x*0.5 + 0.5;
+  vec4 depth = texture(shadow_map, shadow_tex_coords);
   // Calculate view direction, normalize it
-
+   vec3 view_dir = normalize(eye_pos - position);
   // Sample texture
-
+  vec4 tex_colour = texture(tex, tex_coord);
   // Calculate spot light
-
+  //for (int j = 0; j < 5; ++ j )
+ colour += calculate_spot ( spot , mat , position , transformed_normal , 
+ view_dir , tex_colour ) ;
   // Scale colour by shade
 
   //Ensure alpha is 1.0

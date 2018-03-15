@@ -37,6 +37,7 @@ void main()
     tex_coord_out = tex_coord_in;
     // *********************************
     // Transform position into light space
-
+	gl_position = lightMVP * vec4(position, 1.0);
+	vertex_light = (M* vec4(position,1.0)).xyz;
     // *********************************
 }

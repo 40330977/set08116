@@ -200,9 +200,9 @@ bool render() {
 	vec3 eye_pos = cam.get_position();
 	glUniform3fv(main_eff.get_uniform_location("eye_pos"), 1, value_ptr(eye_pos));
     // Bind shadow map texture - use texture unit 1
-	renderer::bind(shadow_eff, 1);
+	renderer::bind( shadow.buffer->get_depth(), 1);
     // Set the shadow_map uniform
-	glUniform1i(main_eff.get_uniform_location("shadow"), 1);
+	glUniform1i(main_eff.get_uniform_location("shadow_map"), 1);
     // Render mesh
 	renderer render(m);
     // *********************************
