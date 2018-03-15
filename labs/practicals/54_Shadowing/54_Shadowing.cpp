@@ -204,7 +204,7 @@ bool render() {
     // Set the shadow_map uniform
 	glUniform1i(main_eff.get_uniform_location("shadow_map"), 1);
     // Render mesh
-	renderer render(m);
+	renderer::render(m);
     // *********************************
   }
 
