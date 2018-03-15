@@ -26,7 +26,7 @@ bool load_content() {
 	/*meshes["plane"] = mesh(geometry_builder::create_plane());
 	meshes["box1"] = mesh(geometry_builder::create_box());
 	meshes["box2"] = mesh(geometry_builder::create_box());
-	meshes["disk"] = mesh(geometry_builder::create_disk(20));
+	meshes["disk"] = mesh(geometry_builder::create_disk(20));create_torus(20, 20, 1.0f, 5.0f)
 	meshes["cylinder"] = mesh(geometry_builder::create_cylinder(20, 20));*/
 
 	plane_mesh = mesh(geometry_builder::create_plane());
@@ -35,39 +35,9 @@ bool load_content() {
 	meshes[0] = mesh(geometry_builder::create_sphere(20, 20));
 	meshes[1] = mesh(geometry_builder::create_sphere(20, 20));
 	meshes[2] = mesh(geometry_builder::create_sphere(20, 20));
-	meshes[3] = mesh(geometry_builder::create_torus(20, 20, 1.0f, 5.0f));
+	meshes[3] = mesh(geometry_builder::create_cylinder(20, 20));
 	
-	/*meshes["pyramid"] = mesh(geometry_builder::create_pyramid());
-	meshes["pyramid1"] = mesh(geometry_builder::create_pyramid());
-	meshes["pyramid2"] = mesh(geometry_builder::create_pyramid());
-	meshes["disk"] = mesh(geometry_builder::create_disk(20));
-	meshes["cylinder"] = mesh(geometry_builder::create_cylinder(20, 20));
-	meshes["sphere"] = mesh(geometry_builder::create_sphere(20, 20));
-	meshes["torus"] = mesh(geometry_builder::create_torus(20, 20, 1.0f, 5.0f));*/
-
-	// Transform objects
-	/*meshes["box"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
-	meshes["box"].get_transform().translate(vec3(10.0f, 2.5f, -30.0f));
-	meshes["box1"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
-	meshes["box1"].get_transform().translate(vec3(-10.0f, 2.5f, -30.0f));
-	meshes["box2"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
-	meshes["box2"].get_transform().translate(vec3(30.0f, 2.5f, -30.0f));
 	
-	meshes["pyramid"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
-	meshes["pyramid"].get_transform().translate(vec3(-10.0f, 7.5f, -30.0f));
-	meshes["pyramid1"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
-	meshes["pyramid1"].get_transform().translate(vec3(10.0f, 7.5f, -30.0f));
-	meshes["pyramid2"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
-	meshes["pyramid2"].get_transform().translate(vec3(30.0f, 7.5f, -30.0f));
-	meshes["disk"].get_transform().scale = vec3(3.0f, 1.0f, 3.0f);
-	meshes["disk"].get_transform().translate(vec3(-10.0f, 11.5f, -30.0f));
-	meshes["disk"].get_transform().rotate(vec3(half_pi<float>(), 0.0f, 0.0f));
-	meshes["cylinder"].get_transform().scale = vec3(5.0f, 5.0f, 5.0f);
-	meshes["cylinder"].get_transform().translate(vec3(-25.0f, 2.5f, -25.0f));
-	meshes["sphere"].get_transform().scale = vec3(2.5f, 2.5f, 2.5f);
-	meshes["sphere"].get_transform().translate(vec3(-25.0f, 10.0f, -25.0f));
-	meshes["torus"].get_transform().translate(vec3(-25.0f, 10.0f, -25.0f));
-	meshes["torus"].get_transform().rotate(vec3(half_pi<float>(), 0.0f, 0.0f));*/
 	// Move Box One to (0,1,0)
 	meshes[0].get_transform().position += vec3(0.0f, 10.0f, 0.0f);
 	// Move Box Two to (0,0,1)
@@ -75,6 +45,8 @@ bool load_content() {
 	//meshes[1].get_transform().rotate(vec3(half_pi<float>(), 0.0f, 0.0f));
 	// Move Box Three to (0,1,0)
 	meshes[2].get_transform().position += vec3(0.0f, 1.0f, 10.0f);
+
+	meshes[3].get_transform().position += vec3(4.0f, 0.0f, 0.0f);
 
 
 	// - all emissive is black
@@ -106,45 +78,7 @@ bool load_content() {
 	plane_mesh.get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	plane_mesh.get_material().set_shininess(25.0f);
 
-	/*// Blue pyramid
-	meshes["pyramid"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	meshes["pyramid"].get_material().set_diffuse(vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	meshes["pyramid"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	meshes["pyramid"].get_material().set_shininess(25.0f);
-
-	meshes["pyramid1"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	meshes["pyramid1"].get_material().set_diffuse(vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	meshes["pyramid1"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	meshes["pyramid1"].get_material().set_shininess(25.0f);
-
-	meshes["pyramid2"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	meshes["pyramid2"].get_material().set_diffuse(vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	meshes["pyramid2"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	meshes["pyramid2"].get_material().set_shininess(25.0f);
-
-	// Yellow disk
-	meshes["disk"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	meshes["disk"].get_material().set_diffuse(vec4(1.0f, 1.0f, 0.0f, 1.0f));
-	meshes["disk"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	meshes["disk"].get_material().set_shininess(25.0f);
-
-	// Magenta cylinder
-	meshes["cylinder"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	meshes["cylinder"].get_material().set_diffuse(vec4(1.0f, 0.0f, 1.0f, 1.0f));
-	meshes["cylinder"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	meshes["cylinder"].get_material().set_shininess(25.0f);
-
-	// Cyan sphere
-	meshes["sphere"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	meshes["sphere"].get_material().set_diffuse(vec4(0.0f, 1.0f, 1.0f, 1.0f));
-	meshes["sphere"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	meshes["sphere"].get_material().set_shininess(25.0f);
-
-	// White torus
-	meshes["torus"].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	meshes["torus"].get_material().set_diffuse(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	meshes["torus"].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	meshes["torus"].get_material().set_shininess(25.0f);*/
+	
 
 	// Load texture
 	tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
@@ -209,7 +143,7 @@ bool load_content() {
 	// Point 3,Position (-10, 5, -35)
 	// green,20 range
 	points[3].set_position(vec3(-10.0f, 5.0f, -35.0f));
-	points[3].set_light_colour(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	points[3].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
 	points[3].set_range(20.0f);
 	
 	
@@ -347,11 +281,13 @@ bool render() {
 		// *********************************
 		// SET M to be the usual mesh  transform matrix
 		auto M = meshes[i].get_transform().get_transform_matrix();
+		auto N = meshes[i].get_transform().get_normal_matrix();
 		// *********************************
 		int f = i;
 		// Apply the heirarchy chain
 		for (size_t j = i; j > 0; j--) {
 			M = meshes[j - 1].get_transform().get_transform_matrix() * M;
+			N = meshes[j - 1].get_transform().get_normal_matrix()*N;
 		}
 
 
@@ -365,7 +301,7 @@ bool render() {
 
 		glUniformMatrix4fv(eff.get_uniform_location("M"), 1, GL_FALSE, value_ptr(M));
 		// Set N matrix uniform - remember - 3x3 matrix
-		glUniformMatrix3fv(eff.get_uniform_location("N"), 1, GL_FALSE, value_ptr(meshes[f].get_transform().get_normal_matrix()));
+		glUniformMatrix3fv(eff.get_uniform_location("N"), 1, GL_FALSE, value_ptr(N));
 		// Bind material
 		renderer::bind(meshes[f].get_material(), "mat");
 		// Bind point lights

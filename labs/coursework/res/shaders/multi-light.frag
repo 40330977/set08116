@@ -79,7 +79,7 @@ vec4 calculate_point(in point_light point, in material mat, in vec3 position, in
   // Calculate primary colour component
   vec4 primary = mat.emissive + diffuse;
   // Calculate final colour - remember alpha
-  colour = primary*tex_colour + specular;
+  vec4 colour = primary*tex_colour + specular;
   colour.a = 1.0;
 
 
@@ -121,7 +121,7 @@ vec4 calculate_spot(in spot_light spot, in material mat, in vec3 position, in ve
   // Calculate primary colour component
   vec4 primarys = mat.emissive + diffuses;
   // Calculate final colour - remember alpha
-  colour = primarys*tex_colour + speculars;
+  vec4 colour = primarys*tex_colour + speculars;
   colour.a = 1.0;
 
 
