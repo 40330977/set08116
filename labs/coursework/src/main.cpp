@@ -94,10 +94,10 @@ bool load_content() {
 	spots[0].set_range(20.0f);
 	spots[0].set_power(0.5f);
 	// Spot 1,Position (-25, 10, -35)
-	// Green,Direction (1, -1, 1) normalized
+	// Blue,Direction (1, -1, 1) normalized
 	// 20 range,0.5 power
 	spots[1].set_position(vec3(-25.0f, 10.0f, -35.0f));
-	spots[1].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	spots[1].set_light_colour(vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	spots[1].set_direction(normalize(vec3(1.0f, -1.0f, -1.0f)));
 	spots[1].set_range(20.0f);
 	spots[1].set_power(0.5f);
@@ -141,9 +141,9 @@ bool load_content() {
 	points[2].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
 	points[2].set_range(20.0f);
 	// Point 3,Position (-10, 5, -35)
-	// green,20 range
+	// blue,20 range
 	points[3].set_position(vec3(-10.0f, 5.0f, -35.0f));
-	points[3].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	points[3].set_light_colour(vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	points[3].set_range(20.0f);
 	
 	
