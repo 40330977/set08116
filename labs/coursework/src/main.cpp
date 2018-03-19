@@ -25,6 +25,7 @@ free_camera cam1;
 //int width, height;
 
 bool load_content() {
+	//shadow attempt code
 	// Create shadow map- use screen size
 	//glfwGetFramebufferSize(renderer::get_window(), &width, &height);
 	//shadow = shadow_map(width, height);
@@ -38,12 +39,11 @@ bool load_content() {
 	meshes[3] = mesh(geometry_builder::create_cylinder(20, 20));
 	
 	
-	// Move Box One to (0,1,0)
+	
 	meshes[0].get_transform().position += vec3(0.0f, 10.0f, 0.0f);
-	// Move Box Two to (0,0,1)
+	
 	meshes[1].get_transform().position += vec3(0.0f, -8.0f, 0.0f);
-	//meshes[1].get_transform().rotate(vec3(half_pi<float>(), 0.0f, 0.0f));
-	// Move Box Three to (0,1,0)
+	
 	meshes[2].get_transform().position += vec3(0.0f, 1.0f, 10.0f);
 
 	meshes[3].get_transform().position += vec3(4.0f, 0.0f, 0.0f);
@@ -150,10 +150,10 @@ bool load_content() {
 	
 	// Load in shaders
 	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.vert", GL_VERTEX_SHADER);
-	//vector<string> fragshaders{ "C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.frag", /*"C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_shadow.frag",
-		//"C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_spot.frag",  "C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_point.frag"*/ };
 	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.frag", GL_FRAGMENT_SHADER);
 
+	//vector<string> fragshaders{ "C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.frag", /*"C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_shadow.frag",
+	//"C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_spot.frag",  "C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_point.frag"*/ };
 	//shadow_eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.vert", GL_VERTEX_SHADER);
 	//shadow_eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.frag", GL_FRAGMENT_SHADER);
 
@@ -176,12 +176,13 @@ bool load_content() {
 
 bool update(float delta_time) {
 
+	//free camera 
 	static double ratio_width = quarter_pi<float>() / static_cast<float>(renderer::get_screen_width());
 	static double ratio_height =
 		(quarter_pi<float>() *
 		(static_cast<float>(renderer::get_screen_height()) / static_cast<float>(renderer::get_screen_width()))) /
 		static_cast<float>(renderer::get_screen_height());
-
+	//free cam variables
 	double current_x;
 	double current_y;
 	double deltax;
@@ -205,6 +206,7 @@ bool update(float delta_time) {
 
 	cam1.rotate(deltaxr, -deltayr);
 
+	//target cam positions
 	if (glfwGetKey(renderer::get_window(), '1')) {
 		cam.set_position(vec3(50, 10, 50));
 	}
@@ -219,7 +221,7 @@ bool update(float delta_time) {
 	}
 
 	
-
+	//movement controls for free cam
 	if (glfwGetKey(renderer::get_window(), 'W')) {
 		direction = +vec3(0.0f, 0.0f, 1.0f);
 	}
@@ -241,22 +243,15 @@ bool update(float delta_time) {
 
 	direction = direction*movespeed*delta_time;
 
-	//if (glfwGetKey(renderer::get_window(), GLFW_KEY_UP)) {
+		//rotation of meshes
 		meshes[0].get_transform().rotate(vec3(0.0f,  -pi<float>() * delta_time,  0.0f ));
-	//}
-	// rotate Box Two on Z axis by delta_time
-	//if (glfwGetKey(renderer::get_window(), GLFW_KEY_UP)) {
+	
 		meshes[1].get_transform().rotate(vec3(0.0f, -pi<float>() * delta_time, 0.0f));
-	//}
 
 		meshes[2].get_transform().rotate(vec3(0.0f, -pi<float>() * delta_time, 0.0f));
-	// Rotate the sphere
-	//meshes["sphere"].get_transform().rotate(vec3(0.0f, half_pi<float>(), 0.0f) * delta_time);
 
-  // Update the camera
-  
 	
-
+  // Update the camera
 	if (glfwGetKey(renderer::get_window(), GLFW_KEY_SPACE)) {
 		cam1.move(direction);
 		// Update the camera
@@ -269,6 +264,7 @@ bool update(float delta_time) {
 	cursor_x = current_x;//used without innitialised
 	cursor_y = current_y;
 
+	//shadow attempt code
 	// Update the shadow map light_position from the spot light
 	//shadow.light_position = spots[1].get_position();
 	// do the same for light_dir property
@@ -278,7 +274,7 @@ bool update(float delta_time) {
 }
 
 bool render() {
-
+	//shadow attempt code
 	/*// Set render target to shadow map
 	renderer::set_render_target(shadow);
 	// Clear depth buffer bit
@@ -354,20 +350,23 @@ bool render() {
 		else {
 			glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(PV * M));
 		}
-
+		//set M
 		glUniformMatrix4fv(eff.get_uniform_location("M"), 1, GL_FALSE, value_ptr(M));
-		// Set N matrix uniform - remember - 3x3 matrix
+		// Set N 
 		glUniformMatrix3fv(eff.get_uniform_location("N"), 1, GL_FALSE, value_ptr(N));
 		renderer::bind(meshes[f].get_material(), "mat");
 		// Bind point lights
 		renderer::bind(points, "points");
 		// Bind spot lights
 		renderer::bind(spots, "spots");
+		//set texture
 		glUniform1i(eff.get_uniform_location("tex"), 0);
 
 		// Set eye position- Get this from active camera
 		vec3 eye_pos = cam.get_position();
 		glUniform3fv(eff.get_uniform_location("eye_pos"), 1, value_ptr(eye_pos));
+
+		//shadow attempt code
 		/*auto lM = M;
 		// viewmatrix from the shadow map
 		auto lV = shadow.get_view();
@@ -388,6 +387,8 @@ bool render() {
 		//renderer::bind(shadow.buffer->get_depth(), 1);
 		// Set the shadow_map uniform
 		//glUniform1i(eff.get_uniform_location("shadow_map"), 1);
+
+
 		// Bind texture to renderer
 		renderer::bind(tex, 0);
 
@@ -406,12 +407,7 @@ bool render() {
 		glUniformMatrix4fv(eff.get_uniform_location("MVP"), 1, GL_FALSE, value_ptr(PV * plane_mesh.get_transform().get_transform_matrix()));
 	}
 	
-
-
-	
-
-	
-	
+	//bind material
 	renderer::bind(plane_mesh.get_material(), "mat");
 	// Bind floor texture
 	renderer::bind(plane_tex, 0);
@@ -420,56 +416,7 @@ bool render() {
 	
 	return true;
 
-	/*// Render meshes
-	for (auto &e : meshes) {
-		auto m = e.second;
-		// Bind effect
-		renderer::bind(eff);
-		// Create MVP matrix
-		auto M = m.get_transform().get_transform_matrix();
-		auto V1 = cam1.get_view();
-		auto P1 = cam1.get_projection();
-		auto V = cam.get_view();
-		auto P = cam.get_projection();
-		auto MVP = P * V * M;
-		auto MVP1 = P1 * V1 * M;
-		// Set MVP matrix uniform
-		if (glfwGetKey(renderer::get_window(), GLFW_KEY_SPACE)) {
-			glUniformMatrix4fv(eff.get_uniform_location("MVP"), // Location of uniform
-				1,                               // Number of values - 1 mat4
-				GL_FALSE,                        // Transpose the matrix?
-				value_ptr(MVP1));                 // Pointer to matrix data
-		}									 // *********************************
-											 // Set M matrix uniform
-
-		else {
-			glUniformMatrix4fv(eff.get_uniform_location("MVP"), // Location of uniform
-				1,                               // Number of values - 1 mat4
-				GL_FALSE,                        // Transpose the matrix?
-				value_ptr(MVP));
-		}
-		glUniformMatrix4fv(eff.get_uniform_location("M"), 1, GL_FALSE, value_ptr(M));
-		// Set N matrix uniform - remember - 3x3 matrix
-		glUniformMatrix3fv(eff.get_uniform_location("N"), 1, GL_FALSE, value_ptr(m.get_transform().get_normal_matrix()));
-		// Bind material
-		renderer::bind(m.get_material(), "mat");
-		// Bind point lights
-		renderer::bind(points, "points");
-		// Bind spot lights
-		renderer::bind(spots, "spots");
-		// Bind texture
-		renderer::bind(tex, 0);
-		// Set tex uniform
-		glUniform1i(eff.get_uniform_location("tex"), 0);
-		// Set eye position- Get this from active camera
-		vec3 eye_pos = cam.get_position();
-		glUniform3fv(eff.get_uniform_location("eye_pos"), 1, value_ptr(eye_pos));
-		// Render mesh
-		renderer::render(m);
-		// *********************************
-	}
-
-	return true;*/
+	
 }
 
 void main() {
