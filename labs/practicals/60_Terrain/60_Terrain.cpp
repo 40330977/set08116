@@ -92,19 +92,19 @@ void generate_terrain(geometry &geom, const texture &height_map, unsigned int wi
 
     // Normal is normal(cross product) of these two sides
     // *********************************
-
-
+	vec3 Normal = cross(side1, side2);
+	Normal.length();
     // Add to normals in the normal buffer using the indices for the triangle
-
-
-
+	normals.push_back(positions[idx1] + Normal);
+	normals.push_back(positions[idx2] + Normal);
+	normals.push_back(positions[idx3] + Normal);
     // *********************************
   }
 
   // Normalize all the normals
   for (auto &n : normals) {
     // *********************************
-
+	  n.length();
     // *********************************
   }
 
@@ -126,11 +126,11 @@ void generate_terrain(geometry &geom, const texture &height_map, unsigned int wi
 
       // *********************************
       // Sum the components of the vector
-
+	  float summed = length(tex_weight);
       // Divide weight by sum
-
+	  tex_weight = tex_weight / summed;
       // Add tex weight to weights
-
+	  tex_weights.push_back(tex_weight);
       // *********************************
     }
   }
@@ -249,7 +249,8 @@ bool render() {
   glUniformMatrix3fv(eff.get_uniform_location("N"), 1, GL_FALSE, value_ptr(terr.get_transform().get_normal_matrix()));
   // *********************************
   // Set eye_pos uniform to camera position
-
+  vec3 eye_pos = cam.get_position();
+  glUniform3fv(eff.get_uniform_location("eye_pos"), 1, value_ptr(eye_pos));
   // *********************************
    //Bind Terrian Material
   renderer::bind(terr.get_material(), "mat");
@@ -260,14 +261,14 @@ bool render() {
   glUniform1i(eff.get_uniform_location("tex[0]"), 0);
   // *********************************
    //Bind Tex[1] to TU 1, set uniform
-
-
+  renderer::bind(tex[1], 1);
+  glUniform1i(eff.get_uniform_location("tex[1]"), 1);
   // Bind Tex[2] to TU 2, set uniform
-
-
+  renderer::bind(tex[2], 2);
+  glUniform1i(eff.get_uniform_location("tex[2]"), 2);
   // Bind Tex[3] to TU 3, set uniform
-
-
+  renderer::bind(tex[3], 3);
+  glUniform1i(eff.get_uniform_location("tex[3]"), 3);
   // *********************************
   // Render terrain
   renderer::render(terr);
