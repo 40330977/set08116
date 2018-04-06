@@ -13,6 +13,7 @@ texture plane_tex;
 effect eff;
 //effect shadow_eff;
 texture tex;
+texture noise;
 target_camera cam;
 vector<point_light> points(4);
 vector<spot_light> spots(5);
@@ -23,6 +24,27 @@ double ypos;
 free_camera cam1;
 //shadow_map shadow;
 //int width, height;
+
+/*void perlingen() {
+	float* p = new float[256];
+	default_random_engine e;
+	uniform_int_distribution<> dist(0, 255);
+	auto n = dist(e);
+	int i;
+
+	for (i = 0; i < 255; i++) {
+
+		p[i] = n;
+
+	}
+
+	//int[256] permutation = { 151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,190, 6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168, 68,175,74,165,71,134,139,48,27,166,77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,55,46,245,40,244,102,143,54, 65,25,63,161, 1,216,80,73,209,76,132,187,208, 89,18,169,200,196,135,130,116,188,159,86,164,100,109,198,173,186, 3,64,52,217,226,250,124,123,5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,189,28,42,223,183,170,213,119,248,152, 2,44,154,163, 70,221,153,101,155,167, 43,172,9,129,22,39,253, 19,98,108,110,79,113,224,232,178,185, 112,104,218,246,97,228,251,34,242,193,238,210,144,12,191,179,162,241, 81,51,145,235,249,14,239,107,49,192,214, 31,181,199,106,157,184, 84,204,176,115,121,50,45,127, 4,150,254,138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180 };
+
+
+
+}*/
+
+
 
 bool load_content() {
 	//shadow attempt code
@@ -84,8 +106,11 @@ bool load_content() {
 	tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
 
 	plane_tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
+
+	//noise = texture("C:/Users/40330977/Desktop/CW/bin/bin/Debug/res/textures/perlin2d.png");
+	noise = texture("C:/Users/40330977/Desktop/CW/bin/bin/Debug/res/textures/Perlin_Noise_990k.stl");
 	
-	// Spot 0, Position (-25, 10, -15)
+	/*// Spot 0, Position (-25, 10, -15)  
 	// Green, Direction (1, -1, -1) normalized
 	// 20 range,0.5 power
 	spots[0].set_position(vec3(-25.0f, 10.0f, -15.0f));
@@ -144,13 +169,16 @@ bool load_content() {
 	// blue,20 range
 	points[3].set_position(vec3(-10.0f, 5.0f, -35.0f));
 	points[3].set_light_colour(vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	points[3].set_range(20.0f);
+	points[3].set_range(20.0f);*/
 	
 	
 	
 	// Load in shaders
-	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.vert", GL_VERTEX_SHADER);
-	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.frag", GL_FRAGMENT_SHADER);
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.vert", GL_VERTEX_SHADER);
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.frag", GL_FRAGMENT_SHADER);
+
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/point.vert", GL_VERTEX_SHADER);
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/point.frag", GL_FRAGMENT_SHADER);
 
 	//vector<string> fragshaders{ "C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.frag", /*"C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_shadow.frag",
 	//"C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_spot.frag",  "C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_point.frag"*/ };
@@ -320,10 +348,14 @@ bool render() {
 	// Get PV
 	const auto PV = cam.get_projection() * cam.get_view();
 	const auto PV1 = cam1.get_projection() * cam1.get_view();
+	const auto V = cam.get_view();
+	const auto V1 = cam1.get_view();
+	vec3 lightpos = vec3(-25, 10, -15);
 	// Set the texture value for the shader here
 	glUniform1i(eff.get_uniform_location("tex"), 0);
 	// Find the lcoation for the MVP uniform
 	const auto loc = eff.get_uniform_location("MVP");
+	const auto mver = eff.get_uniform_location("MV");
 
 
 	// Render meshes
@@ -346,9 +378,11 @@ bool render() {
 		// Set MVP matrix uniform
 		if (glfwGetKey(renderer::get_window(), GLFW_KEY_SPACE)) {
 			glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(PV1 * M));
+			glUniformMatrix4fv(mver, 1, GL_FALSE, value_ptr(V1 * M));
 		}
 		else {
 			glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(PV * M));
+			glUniformMatrix4fv(mver, 1, GL_FALSE, value_ptr(V * M));
 		}
 		//set M
 		glUniformMatrix4fv(eff.get_uniform_location("M"), 1, GL_FALSE, value_ptr(M));
@@ -356,11 +390,13 @@ bool render() {
 		glUniformMatrix3fv(eff.get_uniform_location("N"), 1, GL_FALSE, value_ptr(N));
 		renderer::bind(meshes[f].get_material(), "mat");
 		// Bind point lights
-		renderer::bind(points, "points");
+		//renderer::bind(points, "points");
 		// Bind spot lights
-		renderer::bind(spots, "spots");
+		//renderer::bind(spots, "spots");
+		glUniform3fv(eff.get_uniform_location("lightpos"), 1, value_ptr(lightpos));
 		//set texture
 		glUniform1i(eff.get_uniform_location("tex"), 0);
+		glUniform1i(eff.get_uniform_location("noise"), 0);
 
 		// Set eye position- Get this from active camera
 		vec3 eye_pos = cam.get_position();
@@ -391,6 +427,7 @@ bool render() {
 
 		// Bind texture to renderer
 		renderer::bind(tex, 0);
+		renderer::bind(noise, 0);
 
 		
 		// Render mesh
