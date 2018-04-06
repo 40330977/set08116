@@ -107,8 +107,8 @@ bool load_content() {
 
 	plane_tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
 
-	//noise = texture("C:/Users/40330977/Desktop/CW/bin/bin/Debug/res/textures/perlin2d.png");
-	noise = texture("C:/Users/40330977/Desktop/CW/bin/bin/Debug/res/textures/Perlin_Noise_990k.stl");
+	noise = texture("C:/Users/40330977/Desktop/CW/bin/bin/Debug/res/textures/perlin2d.png");
+	//noise = texture("C:/Users/40330977/Desktop/CW/bin/bin/Debug/res/textures/Perlin_Noise.raw");
 	
 	/*// Spot 0, Position (-25, 10, -15)  
 	// Green, Direction (1, -1, -1) normalized
@@ -351,6 +351,8 @@ bool render() {
 	const auto V = cam.get_view();
 	const auto V1 = cam1.get_view();
 	vec3 lightpos = vec3(-25, 10, -15);
+	vec3 sky = vec3(0.0, 0.0, 0.8);
+	vec3 cloud = vec3(0.8, 0.8, 0.8);
 	// Set the texture value for the shader here
 	glUniform1i(eff.get_uniform_location("tex"), 0);
 	// Find the lcoation for the MVP uniform
@@ -386,7 +388,7 @@ bool render() {
 		}
 		//set M
 		glUniformMatrix4fv(eff.get_uniform_location("M"), 1, GL_FALSE, value_ptr(M));
-		// Set N 
+		// Set N  
 		glUniformMatrix3fv(eff.get_uniform_location("N"), 1, GL_FALSE, value_ptr(N));
 		renderer::bind(meshes[f].get_material(), "mat");
 		// Bind point lights
@@ -394,6 +396,8 @@ bool render() {
 		// Bind spot lights
 		//renderer::bind(spots, "spots");
 		glUniform3fv(eff.get_uniform_location("lightpos"), 1, value_ptr(lightpos));
+		glUniform3fv(eff.get_uniform_location("sky"), 1, value_ptr(sky));
+		glUniform3fv(eff.get_uniform_location("cloud"), 1, value_ptr(cloud));
 		//set texture
 		glUniform1i(eff.get_uniform_location("tex"), 0);
 		glUniform1i(eff.get_uniform_location("noise"), 0);

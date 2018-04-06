@@ -10,6 +10,8 @@
 // Texture
 //uniform sampler2D tex;
 uniform sampler3D noise;
+uniform vec3 sky;
+uniform vec3 cloud;
 
 // Incoming position
 layout(location = 0) in vec3 vertex_position;
@@ -37,9 +39,10 @@ void main() {
  //colour += calculate_point ( points [ i ] , mat , vertex_position , transformed_normal , 
  //view_dir , tex_colour ) ;
 
- vec3 sky = vec3(0.0,0.0,0.8);
- vec3 cloud = vec3(0.8,0.8,0.8);
+ //vec3 sky = vec3(0.0,0.0,0.8);
+ //vec3 cloud = vec3(0.8,0.8,0.8);
 
+ //vec3 noiser = vec3(noise, 1.0);
  vec4 noisevec = texture(noise, vertex_position);
 
  float intensity =  (noisevec[0]+noisevec[1]+noisevec[2]+noisevec[3]+0.03125)*1.5;
