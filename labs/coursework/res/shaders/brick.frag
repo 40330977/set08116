@@ -1,19 +1,34 @@
 #version 440
 
-vec3 calc_normal(in vec3 normal, in vec3 tangent, in vec3 binormal, in sampler2D normal_map, in vec2 tex_coord)
+uniform vec3 brick;
+uniform vec3 mortar;
+uniform vec2 bsize;
+uniform vec2 bpct;
+
+layout(location = 1) in vec2 modelcoordpos;
+layout(location = 2) in float lightintensity;
+
+// Outgoing colour
+layout(location = 0) out vec4 colour;
+
+void main(){
+
+vec3 fragcolour;
+vec2 pos;
+vec2 use;
+
+pos = modelcoordpos/bsize;
+
+if(fract(pos.y*0.5) > 0.5)
 {
-	// *********************************
-	// Ensure normal, tangent and binormal are unit length (normalized)
+	pos.x = 0.5;
+}
 
+pos = fract(pos);
+use = step(pos, bpct)
 
+fragcolour = mix(mortar, brick, use.x*use.y);
+fragcolour*=lightintensity;
 
-	// Sample normal from normal map
-
-	// *********************************
-	// Transform components to range [0, 1]
-	sampled_normal = 2.0 * sampled_normal - vec3(1.0, 1.0, 1.0);
-	// Generate TBN matrix
-	mat3 TBN = mat3(tangent, binormal, normal);
-	// Return sampled normal transformed by TBN
-	return normalize(TBN * sampled_normal);
+colour = vec4(fragcolour, 1.0);
 }
