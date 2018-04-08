@@ -46,6 +46,8 @@ free_camera cam1;
 
 
 
+
+
 bool load_content() {
 	//shadow attempt code
 	// Create shadow map- use screen size
@@ -103,11 +105,11 @@ bool load_content() {
 	
 
 	// Load texture
-	tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
+	//tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
 
-	plane_tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
+	//plane_tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
 
-	noise = texture("C:/Users/40330977/Desktop/CW/bin/bin/Debug/res/textures/perlin2d.png");
+	//noise = texture("C:/Users/40330977/Desktop/CW/bin/bin/Debug/res/textures/perlin2d.png");
 	//noise = texture("C:/Users/40330977/Desktop/CW/bin/bin/Debug/res/textures/Perlin_Noise.raw");
 	
 	/*// Spot 0, Position (-25, 10, -15)  
@@ -177,8 +179,8 @@ bool load_content() {
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.vert", GL_VERTEX_SHADER);
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.frag", GL_FRAGMENT_SHADER);
 
-	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/point.vert", GL_VERTEX_SHADER);
-	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/point.frag", GL_FRAGMENT_SHADER);
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.vert", GL_VERTEX_SHADER);
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.frag", GL_FRAGMENT_SHADER);
 
 	//vector<string> fragshaders{ "C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.frag", /*"C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_shadow.frag",
 	//"C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_spot.frag",  "C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_point.frag"*/ };
@@ -351,8 +353,17 @@ bool render() {
 	const auto V = cam.get_view();
 	const auto V1 = cam1.get_view();
 	vec3 lightpos = vec3(-25, 10, -15);
-	vec3 sky = vec3(0.0, 0.0, 0.8);
-	vec3 cloud = vec3(0.8, 0.8, 0.8);
+	vec3 lightcolour = vec3(1.0, 1.0, 1.0);
+	vec3 specular = vec3(0.5, 0.5, 0.5);
+	vec3 ambient = vec3(0.5, 0.5, 0.5);
+	float kd = 0.5;
+	vec3 stripecolour = vec3(1.0, 0.0, 0.0);
+	vec3 backcolour = vec3(0.0, 1.0, 0.0);
+	float width = 0.5;
+	float fuzz = 0.5;
+	float scaler = 0.5;
+	//vec3 sky = vec3(0.0, 0.0, 0.8);
+	//vec3 cloud = vec3(0.8, 0.8, 0.8);
 	// Set the texture value for the shader here
 	glUniform1i(eff.get_uniform_location("tex"), 0);
 	// Find the lcoation for the MVP uniform
@@ -396,11 +407,20 @@ bool render() {
 		// Bind spot lights
 		//renderer::bind(spots, "spots");
 		glUniform3fv(eff.get_uniform_location("lightpos"), 1, value_ptr(lightpos));
-		glUniform3fv(eff.get_uniform_location("sky"), 1, value_ptr(sky));
-		glUniform3fv(eff.get_uniform_location("cloud"), 1, value_ptr(cloud));
+		glUniform3fv(eff.get_uniform_location("lightcolour"), 1, value_ptr(lightcolour));
+		glUniform3fv(eff.get_uniform_location("specular"), 1, value_ptr(specular));
+		glUniform3fv(eff.get_uniform_location("ambient"), 1, value_ptr(ambient));
+		glUniform3fv(eff.get_uniform_location("stripecolour"), 1, value_ptr(stripecolour));
+		glUniform3fv(eff.get_uniform_location("backcolour"), 1, value_ptr(backcolour));
+		glUniform1f(eff.get_uniform_location("kd"), kd);
+		glUniform1f(eff.get_uniform_location("width"), width);
+		glUniform1f(eff.get_uniform_location("fuzz"), fuzz);
+		glUniform1f(eff.get_uniform_location("scaler"), scaler);
+		//glUniform3fv(eff.get_uniform_location("sky"), 1, value_ptr(sky));
+		//glUniform3fv(eff.get_uniform_location("cloud"), 1, value_ptr(cloud));
 		//set texture
-		glUniform1i(eff.get_uniform_location("tex"), 0);
-		glUniform1i(eff.get_uniform_location("noise"), 0);
+		//glUniform1i(eff.get_uniform_location("tex"), 0);
+		//glUniform1i(eff.get_uniform_location("noise"), 0);
 
 		// Set eye position- Get this from active camera
 		vec3 eye_pos = cam.get_position();
@@ -430,8 +450,8 @@ bool render() {
 
 
 		// Bind texture to renderer
-		renderer::bind(tex, 0);
-		renderer::bind(noise, 0);
+		//renderer::bind(tex, 0);
+		//renderer::bind(noise, 0);
 
 		
 		// Render mesh
@@ -449,9 +469,9 @@ bool render() {
 	}
 	
 	//bind material
-	renderer::bind(plane_mesh.get_material(), "mat");
+	//renderer::bind(plane_mesh.get_material(), "mat");
 	// Bind floor texture
-	renderer::bind(plane_tex, 0);
+	//renderer::bind(plane_tex, 0);
 	// Render floor
 	renderer::render(plane_mesh);
 	

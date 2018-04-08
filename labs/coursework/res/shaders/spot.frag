@@ -1,39 +1,27 @@
 #version 440
 
-// Spot light data
-struct spot_light {
-  vec4 light_colour;
-  vec3 position;
-  vec3 direction;
-  float constant;
-  float linear;
-  float quadratic;
-  float power;
-};
+uniform vec3 stripecolour;
+uniform vec3 backcolour;
+uniform float width;
+uniform float fuzz;
+uniform float scaler;
 
-// Material data
-struct material {
-  vec4 emissive;
-  vec4 diffuse_reflection;
-  vec4 specular_reflection;
-  float shininess;
-};
 
-// Spot light being used in the scene
-uniform spot_light light;
-// Material of the object being rendered
-uniform material mat;
 // Position of the eye (camera)
-uniform vec3 eye_pos;
+//uniform vec3 eye_pos;
 // Texture to sample from
-uniform sampler2D tex;
+//uniform sampler2D tex;
 
 // Incoming position
-layout(location = 0) in vec3 position;
+//layout(location = 0) in vec3 position;
 // Incoming normal
-layout(location = 1) in vec3 transformed_normal;
+//layout(location = 1) in vec3 transformed_normal;
 // Incoming texture coordinate
-layout(location = 2) in vec2 tex_coord;
+//layout(location = 2) in vec2 tex_coord;
+
+layout(location = 0) in vec3 diffusecolour;
+layout(location = 1) in vec3 specularcolour;
+layout(location = 2) in float texcoord;
 
 // Outgoing colour
 layout(location = 0) out vec4 colour;
@@ -41,7 +29,7 @@ layout(location = 0) out vec4 colour;
 void main() {
   // *********************************
   // Calculate direction to the light
-   vec3 light_dir = normalize(light.position - position);
+  /* vec3 light_dir = normalize(light.position - position);
   // Calculate distance to light
   float L = length(light.position - position);
   // Calculate attenuation value
@@ -71,12 +59,17 @@ void main() {
   vec4 primary = mat.emissive + diffuse;
   // Calculate final colour - remember alpha
   colour = primary*tex_colour + specular;
-  colour.a = 1.0;
+  colour.a = 1.0;*/
 
+  float scaledt = fract(texcoord * scaler);
+  float frac1 = clamp(scaledt/fuzz, 0.0, 1.0);
+  float frac2 = clamp((scaledt-width)/fuzz, 0.0, 1.0);
 
+  frac1 = frac1*(1.0-frac2);
+  frac1 = frac1 * frac1 * (3.0-(2.0*frac1));
+  vec3 fragcolour = mix(backcolour, stripecolour, frac1);
 
-
-
-
+  fragcolour = fragcolour*diffusecolour + specularcolour;
+  colour = vec4(fragcolour, 1.0);
   // *********************************
 }
