@@ -58,6 +58,7 @@ bool load_content() {
 
 	// Create scene
 	meshes[0] = mesh(geometry_builder::create_sphere(20, 20));
+	//meshes[0] = mesh(geometry_builder::create_box());
 	meshes[1] = mesh(geometry_builder::create_sphere(20, 20));
 	meshes[2] = mesh(geometry_builder::create_sphere(20, 20));
 	meshes[3] = mesh(geometry_builder::create_cylinder(20, 20));
@@ -65,19 +66,19 @@ bool load_content() {
 	
 	
 	meshes[0].get_transform().position += vec3(0.0f, 10.0f, 0.0f);
-	
-	meshes[1].get_transform().position += vec3(0.0f, -8.0f, 0.0f);
-	
-	meshes[2].get_transform().position += vec3(0.0f, 1.0f, 10.0f);
-
+	//meshes[1].get_transform().position += vec3(0.0f, -8.0f, 0.0f);
+	meshes[2].get_transform().position += vec3(0.0f, 1.0f, 3.0f);
 	meshes[3].get_transform().position += vec3(4.0f, 0.0f, 0.0f);
 
+	meshes[0].get_transform().scale += 5.0f;
+	
+	
 
 	// - all emissive is black
 	// - all specular is white
 	// - all shininess is 25
 	
-	meshes[0].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	/*meshes[0].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	meshes[0].get_material().set_diffuse(vec4(1.0f, 0.0f, 1.0f, 1.0f));
 	meshes[0].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	meshes[0].get_material().set_shininess(25.0f);
@@ -100,7 +101,7 @@ bool load_content() {
 	plane_mesh.get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	plane_mesh.get_material().set_diffuse(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	plane_mesh.get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	plane_mesh.get_material().set_shininess(25.0f);
+	plane_mesh.get_material().set_shininess(25.0f);*/
 
 	
 
@@ -273,12 +274,7 @@ bool update(float delta_time) {
 
 	direction = direction*movespeed*delta_time;
 
-		//rotation of meshes
-		meshes[0].get_transform().rotate(vec3(0.0f,  -pi<float>() * delta_time,  0.0f ));
-	
-		meshes[1].get_transform().rotate(vec3(0.0f, -pi<float>() * delta_time, 0.0f));
-
-		meshes[2].get_transform().rotate(vec3(0.0f, -pi<float>() * delta_time, 0.0f));
+		
 
 	
   // Update the camera
@@ -304,47 +300,7 @@ bool update(float delta_time) {
 }
 
 bool render() {
-	//shadow attempt code
-	/*// Set render target to shadow map
-	renderer::set_render_target(shadow);
-	// Clear depth buffer bit
-	glClear(GL_DEPTH_BUFFER_BIT);
-	// Set face cull mode to front
-	glCullFace(GL_FRONT);
-	// *********************************
-
-	// We could just use the Camera's projection, 
-	// but that has a narrower FoV than the cone of the spot light, so we would get clipping.
-	// so we have yo create a new Proj Mat with a field of view of 90.
-	mat4 LightProjectionMat = perspective<float>(90.f, renderer::get_screen_aspect(), 0.1f, 1000.f);
-
-	// Bind shader
-	renderer::bind(shadow_eff);
-	// Render meshes
-	for (size_t k = 0; k < meshes.size(); k++) {
-		// *********************************
-		// SET M to be the usual mesh  transform matrix
-		auto M = meshes[k].get_transform().get_transform_matrix();
-		// Create MVP matrix
-		
-		// *********************************
-		// View matrix taken from shadow map
-		auto V = shadow.get_view();
-		// *********************************
-		auto MVP = LightProjectionMat * V * M;
-		// Set MVP matrix uniform
-		glUniformMatrix4fv(shadow_eff.get_uniform_location("MVP"), // Location of uniform
-			1,                                      // Number of values - 1 mat4
-			GL_FALSE,                               // Transpose the matrix?
-			value_ptr(MVP));                        // Pointer to matrix data
-													// Render mesh
-		renderer::render(meshes[k]);
-	}
-	// *********************************
-	renderer::set_render_target();
-	// Set face cull mode to back
-	glCullFace(GL_BACK);*/
-	// *********************************
+	
 
 	renderer::bind(eff);
 	// Get PV
@@ -358,10 +314,10 @@ bool render() {
 	vec3 ambient = vec3(0.5, 0.5, 0.5);
 	float kd = 0.5;
 	vec3 stripecolour = vec3(1.0, 0.0, 0.0);
-	vec3 backcolour = vec3(0.0, 1.0, 0.0);
+	vec3 backcolour = vec3(0.0, 0.0, 1.0);
 	float width = 0.5;
 	float fuzz = 0.5;
-	float scaler = 0.5;
+	float scaler = 5.0;
 	//vec3 sky = vec3(0.0, 0.0, 0.8);
 	//vec3 cloud = vec3(0.8, 0.8, 0.8);
 	// Set the texture value for the shader here
@@ -397,6 +353,11 @@ bool render() {
 			glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(PV * M));
 			glUniformMatrix4fv(mver, 1, GL_FALSE, value_ptr(V * M));
 		}
+
+
+
+
+
 		//set M
 		glUniformMatrix4fv(eff.get_uniform_location("M"), 1, GL_FALSE, value_ptr(M));
 		// Set N  
