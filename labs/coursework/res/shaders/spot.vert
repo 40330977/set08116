@@ -1,5 +1,14 @@
 #version 440
 
+// Point light information
+struct point_light {
+  vec4 light_colour;
+  vec3 position;
+  float constant;
+  float linear;
+  float quadratic;
+};
+
 // Material information
 struct material {
   vec4 emissive;
@@ -18,6 +27,8 @@ uniform mat4 MV;
 
 //Material for the object
 uniform material mat;
+// Point light for the scene
+uniform point_light light;
 
 uniform vec3 lightposition;
 uniform vec3 lightcolour;
@@ -54,7 +65,7 @@ void main() {
   
   vec3 ecpos = vec3(MV* vec4(position, 1.0));
   vec3 tnorm = normalize(N*normal);
-  vec3 lightvec = normalize(lightposition-ecpos);
+  vec3 lightvec = normalize(light.position-ecpos);
   vec3 viewvec = normalize(eye_pos-ecpos);
   vec3 hvec = normalize(viewvec+lightvec);
 

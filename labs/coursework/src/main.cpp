@@ -22,6 +22,7 @@ double cursor_y = 0.0;
 double xpos;
 double ypos;
 free_camera cam1;
+point_light light;
 //shadow_map shadow;
 //int width, height;
 
@@ -103,8 +104,19 @@ bool load_content() {
 	plane_mesh.get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	plane_mesh.get_material().set_shininess(25.0f);
 
-	
+	// Set lighting values, Position (-25, 10, -10)
+	light.set_position(vec3(-25.0f, 10.0f, -10.0f));
+	// Light colour white
+	light.set_light_colour(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	// Set range to 20
+	light.set_range(20.0f);
 
+	light.set_constant_attenuation(1.0f);
+	light.set_linear_attenuation(1.0f);
+	light.set_quadratic_attenuation(1.0f);
+	
+	
+	
 	// Load texture
 	//tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
 
@@ -180,11 +192,11 @@ bool load_content() {
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.vert", GL_VERTEX_SHADER);
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.frag", GL_FRAGMENT_SHADER);
 
-	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.vert", GL_VERTEX_SHADER);
-	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.frag", GL_FRAGMENT_SHADER);
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.vert", GL_VERTEX_SHADER);
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.frag", GL_FRAGMENT_SHADER);
 
-	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.vert", GL_VERTEX_SHADER);
-	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.frag", GL_FRAGMENT_SHADER);
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.vert", GL_VERTEX_SHADER);
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.frag", GL_FRAGMENT_SHADER);
 
 	//vector<string> fragshaders{ "C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.frag", /*"C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_shadow.frag",
 	//"C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_spot.frag",  "C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_point.frag"*/ };
@@ -318,8 +330,8 @@ bool render() {
 	float kd = 0.5;
 	vec3 stripecolour = vec3(1.0, 0.0, 0.0);
 	vec3 backcolour = vec3(0.0, 0.0, 1.0);
-	vec3 brick = vec3(1.0, 0.3, 0.3);
-	vec3 mortar = vec3(0.5, 0.5, 0.5);
+	vec3 brick = vec3(0.9, 0.4, 0.4);
+	vec3 mortar = vec3(1.0, 0.7, 0.3);
 	vec2 bsize = vec2(0.2, 0.2);
 	vec2 bpct = vec2(0.8, 0.8);
 	float width = 0.5;
