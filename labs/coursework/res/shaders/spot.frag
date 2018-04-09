@@ -1,5 +1,7 @@
 #version 440
 
+
+
 uniform vec3 stripecolour;
 uniform vec3 backcolour;
 uniform float width;
@@ -11,6 +13,7 @@ uniform float scaler;
 //uniform vec3 eye_pos;
 // Texture to sample from
 //uniform sampler2D tex;
+
 
 // Incoming position
 //layout(location = 0) in vec3 position;

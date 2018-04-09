@@ -25,7 +25,7 @@ if(fract(pos.y*0.5) > 0.5)
 }
 
 pos = fract(pos);
-use = step(pos, bpct)
+use = step(pos, bpct);
 
 fragcolour = mix(mortar, brick, use.x*use.y);
 fragcolour*=lightintensity;

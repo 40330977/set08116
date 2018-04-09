@@ -1,5 +1,13 @@
 #version 440
 
+// Material information
+struct material {
+  vec4 emissive;
+  vec4 diffuse_reflection;
+  vec4 specular_reflection;
+  float shininess;
+};
+
 // Model transformation matrix
 uniform mat4 M;
 // Transformation matrix
@@ -7,6 +15,9 @@ uniform mat4 MVP;
 // Normal matrix
 uniform mat3 N;
 uniform mat4 MV;
+
+//Material for the object
+uniform material mat;
 
 uniform vec3 lightposition;
 uniform vec3 lightcolour;
@@ -52,7 +63,7 @@ void main() {
 
   diffusecolour = lightcolour * vec3(kd* dot(lightvec, tnorm));
   diffusecolour = clamp(ambient + diffusecolour, 0.0, 1.0);
-  specularcolour = clamp((lightcolour*specular*spec), 0.0, 1.0);
+  specularcolour = clamp((lightcolour*vec3(mat.specular_reflection)*spec), 0.0, 1.0);
   texcoord = tex_coord_in.t;
 
   // *********************************

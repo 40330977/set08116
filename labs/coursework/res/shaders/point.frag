@@ -1,9 +1,17 @@
 #version 440
 
+// Material information
+struct material {
+  vec4 emissive;
+  vec4 diffuse_reflection;
+  vec4 specular_reflection;
+  float shininess;
+};
+
 
 // Point lights being used in the scene
 //uniform point_light points[4];
-// Material for the object
+ Material for the object
 //uniform material mat;
 // Eye position
 //uniform vec3 eye_pos;

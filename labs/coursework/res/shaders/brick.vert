@@ -21,9 +21,9 @@ layout(location = 2) in vec3 normal;
 layout(location = 1) out vec2 modelcoordpos;
 layout(location = 2) out float lightintensity;
 
-void(){
+void main(){
 
-vec3 ecposition = vec3(MV*position);
+vec3 ecposition = vec3(MV*vec4(position, 1.0));
 vec3 tnorm = normalize(N*normal);
 vec3 lightvec = normalize(lightposition - ecposition);
 vec3 reflectvec = reflect(-lightvec, tnorm);

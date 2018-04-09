@@ -58,7 +58,7 @@ bool load_content() {
 
 	// Create scene
 	meshes[0] = mesh(geometry_builder::create_sphere(20, 20));
-	//meshes[0] = mesh(geometry_builder::create_box());
+	//meshes[0] = mesh(geometry_builder::create_box(vec3(20,20,20)));
 	meshes[1] = mesh(geometry_builder::create_sphere(20, 20));
 	meshes[2] = mesh(geometry_builder::create_sphere(20, 20));
 	meshes[3] = mesh(geometry_builder::create_cylinder(20, 20));
@@ -78,7 +78,7 @@ bool load_content() {
 	// - all specular is white
 	// - all shininess is 25
 	
-	/*meshes[0].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes[0].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	meshes[0].get_material().set_diffuse(vec4(1.0f, 0.0f, 1.0f, 1.0f));
 	meshes[0].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	meshes[0].get_material().set_shininess(25.0f);
@@ -101,7 +101,7 @@ bool load_content() {
 	plane_mesh.get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	plane_mesh.get_material().set_diffuse(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	plane_mesh.get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	plane_mesh.get_material().set_shininess(25.0f);*/
+	plane_mesh.get_material().set_shininess(25.0f);
 
 	
 
@@ -182,6 +182,9 @@ bool load_content() {
 
 	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.vert", GL_VERTEX_SHADER);
 	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.frag", GL_FRAGMENT_SHADER);
+
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.vert", GL_VERTEX_SHADER);
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.frag", GL_FRAGMENT_SHADER);
 
 	//vector<string> fragshaders{ "C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.frag", /*"C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_shadow.frag",
 	//"C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_spot.frag",  "C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_point.frag"*/ };
@@ -315,6 +318,10 @@ bool render() {
 	float kd = 0.5;
 	vec3 stripecolour = vec3(1.0, 0.0, 0.0);
 	vec3 backcolour = vec3(0.0, 0.0, 1.0);
+	vec3 brick = vec3(1.0, 0.3, 0.3);
+	vec3 mortar = vec3(0.5, 0.5, 0.5);
+	vec2 bsize = vec2(0.2, 0.2);
+	vec2 bpct = vec2(0.8, 0.8);
 	float width = 0.5;
 	float fuzz = 0.5;
 	float scaler = 5.0;
@@ -377,6 +384,10 @@ bool render() {
 		glUniform1f(eff.get_uniform_location("width"), width);
 		glUniform1f(eff.get_uniform_location("fuzz"), fuzz);
 		glUniform1f(eff.get_uniform_location("scaler"), scaler);
+		glUniform3fv(eff.get_uniform_location("brick"), 1, value_ptr(brick));
+		glUniform3fv(eff.get_uniform_location("mortar"), 1, value_ptr(mortar));
+		glUniform2fv(eff.get_uniform_location("bsize"), 1, value_ptr(bsize));
+		glUniform2fv(eff.get_uniform_location("bpct"), 1, value_ptr(bpct));
 		//glUniform3fv(eff.get_uniform_location("sky"), 1, value_ptr(sky));
 		//glUniform3fv(eff.get_uniform_location("cloud"), 1, value_ptr(cloud));
 		//set texture
