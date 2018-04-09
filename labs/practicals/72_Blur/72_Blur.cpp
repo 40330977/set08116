@@ -17,14 +17,14 @@ geometry screen_quad;
 bool load_content() {
   // *********************************
   // Create frame buffer - use screen width and height
-
+	frame = frame_buffer(renderer::get_screen_width(), renderer::get_screen_height());
   // Create screen quad
-
-
-
-
-
-
+	vector<vec3> positions{ vec3(-1.0f, -1.0f, 0.0f), vec3(1.0f, -1.0f, 0.0f), vec3(-1.0f, 1.0f, 0.0f),
+		vec3(1.0f, 1.0f, 0.0f) };
+	vector<vec2> tex_coords{ vec2(0.0, 0.0), vec2(1.0f, 0.0f), vec2(0.0f, 1.0f), vec2(1.0f, 1.0f) };
+	screen_quad.add_buffer(positions, BUFFER_INDEXES::POSITION_BUFFER);
+	screen_quad.add_buffer(tex_coords, BUFFER_INDEXES::TEXTURE_COORDS_0);
+	screen_quad.set_type(GL_TRIANGLE_STRIP);
   // *********************************
 
   // Create plane mesh
@@ -144,9 +144,9 @@ bool update(float delta_time) {
 bool render() {
   // *********************************
   // Set render target to frame buffer
-
+	renderer::set_render_target(frame);
   // Clear frame
-
+	glClear(GL_FRAMEBUFFER_BARRIER_BIT);
   // *********************************
 
   // Render meshes
@@ -186,9 +186,9 @@ bool render() {
 
   // *********************************
   // Set render target back to the screen
-
+  renderer::set_render_target();
   // Bind Tex effect
-
+  renderer::bind(tex, 0);
   // MVP is now the identity matrix
 
   // Set MVP matrix uniform
