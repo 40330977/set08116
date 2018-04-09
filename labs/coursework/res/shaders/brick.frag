@@ -21,7 +21,7 @@ pos = modelcoordpos/bsize;
 
 if(fract(pos.y*0.5) > 0.5)
 {
-	pos.x = 0.5;
+	pos.x += 0.5;//remove + fpr deathstar like effect
 }
 
 pos = fract(pos);

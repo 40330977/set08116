@@ -12,7 +12,10 @@ layout(location = 2) in float lightintensity;
 // Outgoing colour
 layout(location = 0) out vec4 colour;
 
-#define integral(x, p, notp) ((floor(x)*(p))+ max(fract(x)-(notp), 0.0))
+vec2 integral(in vec2 x, in vec2 p, in vec2 notp) {
+vec2 use = ((floor(x)*(p))+ max(fract(x)-(notp), 0.0));
+return use;
+}
 
 void main(){
 
@@ -30,7 +33,7 @@ if(fract(pos.y*0.5) > 0.5)
 
 fw = fwidth(pos);
 
-use = (Integral(pos+fw, bpct, mpct)-integral(pos, bpct, mpct))/fw;
+use += (integral(pos+fw, bpct, mpct)-integral(pos, bpct, mpct))/fw;
 
 fragcolour = mix(mortar, brick, use.x*use.y);
 fragcolour*=lightintensity;
