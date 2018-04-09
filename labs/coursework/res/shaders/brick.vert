@@ -51,7 +51,6 @@ vec3 lightvec = normalize(light.position - ecposition);
 vec3 reflectvec = reflect(-lightvec, tnorm);
 vec3 viewvec = normalize(-ecposition);
 float diffuse = max(dot(lightvec, tnorm), 0.0);
-
 float spec = 0.0;
 
 if(diffuse > 0.0)

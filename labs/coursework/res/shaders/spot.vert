@@ -72,9 +72,9 @@ void main() {
   float spec = clamp(dot(hvec, tnorm), 0.0, 1.0);
   spec = pow(spec, 16.0);
 
-  diffusecolour = lightcolour * vec3(kd* dot(lightvec, tnorm));
+  diffusecolour = light.light_colour.xyz * vec3(kd* dot(lightvec, tnorm));
   diffusecolour = clamp(ambient + diffusecolour, 0.0, 1.0);
-  specularcolour = clamp((lightcolour*vec3(mat.specular_reflection)*spec), 0.0, 1.0);
+  specularcolour = clamp((light.light_colour.xyz*vec3(mat.specular_reflection)*spec), 0.0, 1.0);
   texcoord = tex_coord_in.t;
 
   // *********************************
