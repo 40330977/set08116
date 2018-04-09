@@ -196,7 +196,8 @@ bool load_content() {
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.frag", GL_FRAGMENT_SHADER);
 
 	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.vert", GL_VERTEX_SHADER);
-	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.frag", GL_FRAGMENT_SHADER);
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.frag", GL_FRAGMENT_SHADER);
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brickantialiased.frag", GL_FRAGMENT_SHADER);
 
 	//vector<string> fragshaders{ "C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.frag", /*"C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_shadow.frag",
 	//"C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_spot.frag",  "C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/part_point.frag"*/ };
@@ -403,6 +404,7 @@ bool render() {
 		glUniform3fv(eff.get_uniform_location("mortar"), 1, value_ptr(mortar));
 		glUniform2fv(eff.get_uniform_location("bsize"), 1, value_ptr(bsize));
 		glUniform2fv(eff.get_uniform_location("bpct"), 1, value_ptr(bpct));
+		glUniform2fv(eff.get_uniform_location("mpct"), 1, value_ptr(mpct));
 		//glUniform3fv(eff.get_uniform_location("sky"), 1, value_ptr(sky));
 		//glUniform3fv(eff.get_uniform_location("cloud"), 1, value_ptr(cloud));
 		//set texture
