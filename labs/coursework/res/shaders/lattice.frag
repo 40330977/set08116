@@ -1,6 +1,6 @@
 #version 440
 
-uniform vec2 scale;
+uniform vec2 scalel;
 uniform vec2 threshold;
 uniform vec3 surface;
 

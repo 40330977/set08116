@@ -4,9 +4,8 @@
 
 uniform vec3 stripecolour;
 uniform vec3 backcolour;
-uniform float width;
-uniform float fuzz;
-uniform float scaler;
+uniform float freq;
+uniform float v;
 
 
 // Position of the eye (camera)
