@@ -13,8 +13,8 @@ layout(location = 0) out vec4 colour;
 
 void main(){
 
-float ss = fract(texcoord.s*scale.s);
-float tt = fract(texcoord.t*scale.t);
+float ss = fract(texcoord.s*scalel.s);
+float tt = fract(texcoord.t*scalel.t);
 
 if((ss> threshold.s) && (tt> threshold.t)){
 discard;}

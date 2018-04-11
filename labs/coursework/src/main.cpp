@@ -56,7 +56,7 @@ bool load_content() {
 	//glfwGetFramebufferSize(renderer::get_window(), &width, &height);
 	//shadow = shadow_map(width, height);
 
-	//teapot = mesh(geometry("C:/Users/40330977/Desktop/set08116/labs/res/models/teapot.obj"));
+	teapot = mesh(geometry("C:/Users/40330977/Desktop/set08116/labs/res/models/teapot.obj"));
 
 	plane_mesh = mesh(geometry_builder::create_plane());
 
@@ -200,12 +200,12 @@ bool load_content() {
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.vert", GL_VERTEX_SHADER);
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.frag", GL_FRAGMENT_SHADER);
 
-	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.vert", GL_VERTEX_SHADER);
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.vert", GL_VERTEX_SHADER);
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.frag", GL_FRAGMENT_SHADER);
-	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brickantialiased.frag", GL_FRAGMENT_SHADER);
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brickantialiased.frag", GL_FRAGMENT_SHADER);
 
-	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/lattice.vert", GL_VERTEX_SHADER);
-	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/lattice.frag", GL_FRAGMENT_SHADER);
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/lattice.vert", GL_VERTEX_SHADER);
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/lattice.frag", GL_FRAGMENT_SHADER);
 
   // Build effect
   eff.build();
@@ -346,7 +346,7 @@ bool render() {
 	float fuzz = 0.5;
 	float scaler = 5.0;
 	vec2 scalel = vec2(1.0, 1.0);
-	vec2 threshold = vec2(0.1, 0.1);
+	vec2 threshold = vec2(0.3, 0.3);
 	vec3 surface = vec3(0.5, 0.5, 0.5);
 
 	//vec3 sky = vec3(0.0, 0.0, 0.8);
@@ -474,7 +474,7 @@ bool render() {
 	//renderer::bind(plane_tex, 0);
 	// Render floor
 	renderer::render(plane_mesh);
-	//renderer::render(teapot);
+	renderer::render(teapot);
 	
 	return true;
 
