@@ -24,27 +24,7 @@ double xpos;
 double ypos;
 free_camera cam1;
 point_light light;
-//shadow_map shadow;
-//int width, height;
 
-/*void perlingen() {
-	float* p = new float[256];
-	default_random_engine e;
-	uniform_int_distribution<> dist(0, 255);
-	auto n = dist(e);
-	int i;
-
-	for (i = 0; i < 255; i++) {
-
-		p[i] = n;
-
-	}
-
-	//int[256] permutation = { 151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,190, 6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168, 68,175,74,165,71,134,139,48,27,166,77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,55,46,245,40,244,102,143,54, 65,25,63,161, 1,216,80,73,209,76,132,187,208, 89,18,169,200,196,135,130,116,188,159,86,164,100,109,198,173,186, 3,64,52,217,226,250,124,123,5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,189,28,42,223,183,170,213,119,248,152, 2,44,154,163, 70,221,153,101,155,167, 43,172,9,129,22,39,253, 19,98,108,110,79,113,224,232,178,185, 112,104,218,246,97,228,251,34,242,193,238,210,144,12,191,179,162,241, 81,51,145,235,249,14,239,107,49,192,214, 31,181,199,106,157,184, 84,204,176,115,121,50,45,127, 4,150,254,138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180 };
-
-
-
-}*/
 
 
 
@@ -126,72 +106,6 @@ bool load_content() {
 	//tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
 
 	//plane_tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
-
-	//noise = texture("C:/Users/40330977/Desktop/CW/bin/bin/Debug/res/textures/perlin2d.png");
-	//noise = texture("C:/Users/40330977/Desktop/CW/bin/bin/Debug/res/textures/Perlin_Noise.raw");
-	
-	/*// Spot 0, Position (-25, 10, -15)  
-	// Green, Direction (1, -1, -1) normalized
-	// 20 range,0.5 power
-	spots[0].set_position(vec3(-25.0f, 10.0f, -15.0f));
-	spots[0].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
-	spots[0].set_direction(normalize(vec3(1.0f, -1.0f, -1.0f)));
-	spots[0].set_range(20.0f);
-	spots[0].set_power(0.5f);
-	// Spot 1,Position (-25, 10, -35)
-	// Blue,Direction (1, -1, 1) normalized
-	// 20 range,0.5 power
-	spots[1].set_position(vec3(-25.0f, 10.0f, -35.0f));
-	spots[1].set_light_colour(vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	spots[1].set_direction(normalize(vec3(1.0f, -1.0f, -1.0f)));
-	spots[1].set_range(20.0f);
-	spots[1].set_power(0.5f);
-	// Spot 2,Position (-10, 10, -15)
-	// Green,Direction (-1, -1, -1) normalized
-	// 20 range,0.5 power
-	spots[2].set_position(vec3(-10.0f, 10.0f, -15.0f));
-	spots[2].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
-	spots[2].set_direction(normalize(vec3(-1.0f, -1.0f, -1.0f)));
-	spots[2].set_range(20.0f);
-	spots[2].set_power(0.5f);
-	// Spot 3,Position (-10, 10, -35)
-	// Green,Direction (-1, -1, 1) normalized
-	// 20 range,0.5 power
-	spots[3].set_position(vec3(-10.0f, 10.0f, -15.0f));
-	spots[3].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
-	spots[3].set_direction(normalize(vec3(-1.0f, -1.0f, 1.0f)));
-	spots[3].set_range(20.0f);
-	spots[3].set_power(0.5f);
-	// Spot 4,Position (-17.5, 15, -25)
-	// Blue,Direction (0, -1, 0)
-	// 30 range,1.0 power
-	spots[4].set_position(vec3(-17.5f, 15.0f, -25.0f));
-	spots[4].set_light_colour(vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	spots[4].set_direction(normalize(vec3(0.0f, -1.0f, 0.0f)));
-	spots[4].set_range(30.0f);
-	spots[4].set_power(1.0f);
-	// Point 0, Position (-25, 5, -15)
-	// Red, 20 range
-	points[0].set_position(vec3(-25.0f, 5.0f, -15.0f));
-	points[0].set_light_colour(vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	points[0].set_range(10.0f);
-	// Point 1, Position (-25, 5, -35)
-	// red,20 range
-	points[1].set_position(vec3(-25.0f, 5.0f, -35.0f));
-	points[1].set_light_colour(vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	points[1].set_range(20.0f);
-	// Point 2,Position (-10, 5, -15)
-	// green,20 range
-	points[2].set_position(vec3(-10.0f, 5.0f, -15.0f));
-	points[2].set_light_colour(vec4(0.0f, 1.0f, 0.0f, 1.0f));
-	points[2].set_range(20.0f);
-	// Point 3,Position (-10, 5, -35)
-	// blue,20 range
-	points[3].set_position(vec3(-10.0f, 5.0f, -35.0f));
-	points[3].set_light_colour(vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	points[3].set_range(20.0f);*/
-	
-	
 	
 	// Load in shaders
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.vert", GL_VERTEX_SHADER);
@@ -308,12 +222,6 @@ bool update(float delta_time) {
 	// Update cursor pos
 	cursor_x = current_x;//used without innitialised
 	cursor_y = current_y;
-
-	//shadow attempt code
-	// Update the shadow map light_position from the spot light
-	//shadow.light_position = spots[1].get_position();
-	// do the same for light_dir property
-	//shadow.light_dir = spots[1].get_direction();
   
   return true;
 }
@@ -416,43 +324,10 @@ bool render() {
 		glUniform2fv(eff.get_uniform_location("scalel"), 1, value_ptr(scalel));
 		glUniform2fv(eff.get_uniform_location("threshold"), 1, value_ptr(threshold));
 		glUniform3fv(eff.get_uniform_location("surface"), 1, value_ptr(surface));
-		//glUniform3fv(eff.get_uniform_location("sky"), 1, value_ptr(sky));
-		//glUniform3fv(eff.get_uniform_location("cloud"), 1, value_ptr(cloud));
-		//set texture
-		//glUniform1i(eff.get_uniform_location("tex"), 0);
-		//glUniform1i(eff.get_uniform_location("noise"), 0);
 
 		// Set eye position- Get this from active camera
 		vec3 eye_pos = cam.get_position();
 		glUniform3fv(eff.get_uniform_location("eye_pos"), 1, value_ptr(eye_pos));
-
-		//shadow attempt code
-		/*auto lM = M;
-		// viewmatrix from the shadow map
-		auto lV = shadow.get_view();
-		// Multiply together with LightProjectionMat
-		auto lP = cam.get_projection();
-		auto lightMVP = lP*lV*lM;
-		// Set uniform
-		glUniformMatrix4fv(eff.get_uniform_location("lightMVP"), // Location of uniform
-			1,                                    // Number of values - 1 mat4
-			GL_FALSE,                             // Transpose the matrix?
-			value_ptr(lightMVP));
-		// Bind material*/
-		
-		
-		// Bind texture
-		
-		// Bind shadow map texture - use texture unit 1
-		//renderer::bind(shadow.buffer->get_depth(), 1);
-		// Set the shadow_map uniform
-		//glUniform1i(eff.get_uniform_location("shadow_map"), 1);
-
-
-		// Bind texture to renderer
-		//renderer::bind(tex, 0);
-		//renderer::bind(noise, 0);
-
 		
 		// Render mesh
 		renderer::render(meshes[f]);

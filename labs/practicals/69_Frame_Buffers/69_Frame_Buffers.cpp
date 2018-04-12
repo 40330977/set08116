@@ -162,7 +162,7 @@ bool render() {
   // Set clear colour to white
 	glClearColor(1.0, 1.0, 1.0, 1.0);
   // Clear frame
-	glClear(GL_FRAMEBUFFER);
+	renderer::clear;
   // *********************************
   // Render meshes
   for (auto &e : meshes) {
@@ -205,7 +205,7 @@ bool render() {
   // Set render target back to the screen
   renderer::set_render_target();
   // bind the tex effect
-  renderer::bind(tex, 0);
+  renderer::bind(tex_eff);
   // Get M from render_cube
   auto M = render_cube.get_transform().get_transform_matrix();
   // get V and P from Cam 2
@@ -214,11 +214,11 @@ bool render() {
   // Build MVP
   auto MVP = P * V * M;
   // Set MVP matrix uniform
-  glUniformMatrix4fv(eff.get_uniform_location("MVP"), 1, GL_FALSE, value_ptr(MVP));
+  glUniformMatrix4fv(tex_eff.get_uniform_location("MVP"), 1, GL_FALSE, value_ptr(MVP));
   // Bind texture from frame buffer
-  renderer::bind(frame, "frame");
+  renderer::bind(frame.get_frame(), 0);
   // Set the tex uniform
-  glUniform1i(eff.get_uniform_location("tex"), 0);
+  glUniform1i(tex_eff.get_uniform_location("tex"), 0);
   // Render the render cube
   renderer::render(render_cube);
   // *********************************
