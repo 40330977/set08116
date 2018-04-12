@@ -23,7 +23,7 @@ uniform mat4 M;
 uniform mat4 MVP;
 // Normal matrix
 uniform mat3 N;
-uniform mat4 MV;
+uniform mat4 MV;//model view matrix
 
 //Material for the object
 uniform material mat;
@@ -46,20 +46,20 @@ layout(location = 2) out float lightintensity;
 void main(){
 
 vec3 ecposition = vec3(MV*vec4(position, 1.0));
-vec3 tnorm = normalize(N*normal);
-vec3 lightvec = normalize(light.position - ecposition);
-vec3 reflectvec = reflect(-lightvec, tnorm);
+vec3 tnorm = normalize(N*normal);//transformed normal
+vec3 lightvec = normalize(light.position - ecposition);//calculate light vector
+vec3 reflectvec = reflect(-lightvec, tnorm);//calculate reflection vector
 vec3 viewvec = normalize(-ecposition);
-float diffuse = max(dot(lightvec, tnorm), 0.0);
+float diffuse = max(dot(lightvec, tnorm), 0.0);calculate diffuse factor
 float spec = 0.0;
 
 if(diffuse > 0.0)
 {
 	spec = max(dot(reflectvec, viewvec), 0.0);
-	spec = pow(spec, 16.0);
+	spec = pow(spec, 16.0);//calculate specular factor
 }
 
-lightintensity = mat.diffuse_reflection.x*diffuse+mat.specular_reflection.x*spec;
-modelcoordpos=position.xy;
+lightintensity = mat.diffuse_reflection.x*diffuse+mat.specular_reflection.x*spec;//calculate light intensity
+modelcoordpos=position.xy;//calculate model coordinate position
 gl_Position = MVP * vec4(position, 1.0);
 }

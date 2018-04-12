@@ -1,9 +1,9 @@
 #version 440
 
-uniform vec3 brick;
-uniform vec3 mortar;
-uniform vec2 bsize;
-uniform vec2 bpct;
+uniform vec3 brick;//brick colour
+uniform vec3 mortar;//mortar colour
+uniform vec2 bsize;//brick size
+uniform vec2 bpct;//brick percent
 
 layout(location = 1) in vec2 modelcoordpos;
 layout(location = 2) in float lightintensity;
@@ -19,15 +19,15 @@ vec2 use;
 
 pos = modelcoordpos/bsize;
 
-if(fract(pos.y*0.5) > 0.5)
+if(fract(pos.y*0.5) > 0.5)//determines where in the pattern the position is
 {
-	pos.x += 0.5;//remove + fpr deathstar like effect
+	pos.x += 0.5;//produces brick offset, remove + for deathstar like effect
 }
 
 pos = fract(pos);
-use = step(pos, bpct);
+use = step(pos, bpct);//generates the step function
 
-fragcolour = mix(mortar, brick, use.x*use.y);
+fragcolour = mix(mortar, brick, use.x*use.y);//mix the brick and mortar colours based on the step function
 fragcolour*=lightintensity;
 
 colour = vec4(fragcolour, 1.0);
