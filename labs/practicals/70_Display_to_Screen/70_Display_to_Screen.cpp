@@ -144,7 +144,7 @@ bool render() {
   // Set render target to frame buffer
 	renderer::set_render_target(frame);
   // Clear frame
-	renderer::clear;
+	renderer::clear();
   // *********************************
 
   // Render meshes

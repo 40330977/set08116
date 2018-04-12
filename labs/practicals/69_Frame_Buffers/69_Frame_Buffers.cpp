@@ -160,9 +160,9 @@ bool render() {
   // Set render target to frame buffer
 	renderer::set_render_target(frame);
   // Set clear colour to white
-	glClearColor(1.0, 1.0, 1.0, 1.0);
+	renderer::setClearColour(1.0f, 1.0f, 1.0f);
   // Clear frame
-	renderer::clear;
+	renderer::clear();
   // *********************************
   // Render meshes
   for (auto &e : meshes) {
@@ -216,9 +216,9 @@ bool render() {
   // Set MVP matrix uniform
   glUniformMatrix4fv(tex_eff.get_uniform_location("MVP"), 1, GL_FALSE, value_ptr(MVP));
   // Bind texture from frame buffer
-  renderer::bind(frame.get_frame(), 0);
+  renderer::bind(frame.get_frame(), 1);
   // Set the tex uniform
-  glUniform1i(tex_eff.get_uniform_location("tex"), 0);
+  glUniform1i(tex_eff.get_uniform_location("tex"), 1);
   // Render the render cube
   renderer::render(render_cube);
   // *********************************
