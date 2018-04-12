@@ -5,7 +5,7 @@ using namespace std;
 using namespace graphics_framework;
 using namespace glm;
 
-std::array<mesh, 4> meshes;
+std::array<mesh, 7> meshes;
 //std::array<texture, 3> textures;
 mesh plane_mesh;
 mesh teapot;
@@ -42,9 +42,6 @@ bool load_content() {
 	screen_quad.add_buffer(positions, BUFFER_INDEXES::POSITION_BUFFER);
 	screen_quad.add_buffer(tex_coords, BUFFER_INDEXES::TEXTURE_COORDS_0);
 	screen_quad.set_type(GL_TRIANGLE_STRIP);
-
-
-
 	// *********************************
 	screen_quad.add_buffer(positions, BUFFER_INDEXES::POSITION_BUFFER);
 	screen_quad.add_buffer(tex_coords, BUFFER_INDEXES::TEXTURE_COORDS_0);
@@ -58,20 +55,24 @@ bool load_content() {
 	//meshes[0] = mesh(geometry_builder::create_box(vec3(20,20,20)));
 	meshes[1] = mesh(geometry_builder::create_sphere(20, 20));
 	meshes[2] = mesh(geometry_builder::create_sphere(20, 20));
-	meshes[3] = mesh(geometry_builder::create_cylinder(20, 20));
+	meshes[3] = mesh(geometry_builder::create_torus(20, 20));
+	meshes[4] = mesh(geometry_builder::create_tetrahedron());
+	meshes[5] = mesh(geometry("C:/Users/40330977/Desktop/set08116/labs/res/models/teapot.obj"));
+	meshes[6] = mesh(geometry_builder::create_pyramid(vec3(20.0, 20.0, 20.0)));
 	
 	
 	
 	meshes[0].get_transform().position += vec3(0.0f, 10.0f, 0.0f);
 	//meshes[1].get_transform().position += vec3(0.0f, -8.0f, 0.0f);
 	meshes[2].get_transform().position += vec3(5.0f, 1.0f, 3.0f);
-	meshes[3].get_transform().position += vec3(4.0f, 0.0f, 0.0f);
+	//meshes[3].get_transform().position += vec3(4.0f, 0.0f, 0.0f);
+	meshes[4].get_transform().position -= vec3(10.0, 0.0, 0.0);
+	meshes[5].get_transform().position -= vec3(0.0, 3.0, 10.0);
+	meshes[6].get_transform().position += vec3(15.0, 12.0, 120.0);
 
 	meshes[0].get_transform().scale += 5.0f;
 
-	//teapot.get_transform().scale = (vec3(0.01f, 0.01f, 0.01f));
-	
-	
+	meshes[5].get_transform().scale = (vec3(0.1f, 0.1f, 0.1f));
 
 	// - all emissive is black
 	// - all specular is white
@@ -108,12 +109,9 @@ bool load_content() {
 	light.set_light_colour(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	// Set range to 20
 	light.set_range(20.0f);
-
 	light.set_constant_attenuation(1.0f);
 	light.set_linear_attenuation(1.0f);
 	light.set_quadratic_attenuation(1.0f);
-	
-	
 	
 	// Load texture
 	//tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
@@ -124,12 +122,12 @@ bool load_content() {
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.vert", GL_VERTEX_SHADER);
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.frag", GL_FRAGMENT_SHADER);
 
-	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.vert", GL_VERTEX_SHADER);
-	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.frag", GL_FRAGMENT_SHADER);
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.vert", GL_VERTEX_SHADER);
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.frag", GL_FRAGMENT_SHADER);
 
-	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.vert", GL_VERTEX_SHADER);
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.vert", GL_VERTEX_SHADER);
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.frag", GL_FRAGMENT_SHADER);
-	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brickantialiased.frag", GL_FRAGMENT_SHADER);
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brickantialiased.frag", GL_FRAGMENT_SHADER);
 
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/lattice.vert", GL_VERTEX_SHADER);
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/lattice.frag", GL_FRAGMENT_SHADER);
@@ -257,7 +255,7 @@ bool render() {
 	const auto PV1 = cam1.get_projection() * cam1.get_view();
 	const auto V = cam.get_view();
 	const auto V1 = cam1.get_view();
-	vec3 lightpos = vec3(-25, 10, -15);
+	vec3 lightpos = vec3(-25, 10, -15);//light position test vector
 	vec3 lightcolour = vec3(1.0, 1.0, 1.0);
 	vec3 specular = vec3(0.5, 0.5, 0.5);
 	vec3 ambient = vec3(0.5, 0.5, 0.5);
@@ -314,10 +312,6 @@ bool render() {
 			glUniformMatrix4fv(loc, 1, GL_FALSE, value_ptr(PV * M));
 			glUniformMatrix4fv(mver, 1, GL_FALSE, value_ptr(V * M));
 		}
-
-
-
-
 
 		//set M
 		glUniformMatrix4fv(eff.get_uniform_location("M"), 1, GL_FALSE, value_ptr(M));
@@ -389,9 +383,7 @@ bool render() {
 	renderer::render(screen_quad);
 	// *********************************
 	
-	return true;
-
-	
+	return true;	
 }
 
 void main() {

@@ -54,6 +54,8 @@ layout(location = 0) out vec3 diffusecolour;
 layout(location = 1) out vec3 specularcolour;
 layout(location = 2) out vec2 texcoord;
 
+//similar to stripe vertex shader except texture coordinates are passed out as vec2
+
 void main() {
   // Calculate screen position
   gl_Position = MVP * vec4(position, 1.0);
