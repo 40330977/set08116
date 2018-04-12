@@ -64,15 +64,15 @@ void main() {
   colour = primary*tex_colour + specular;
   colour.a = 1.0;*/
 
-  float scaledt = fract(texcoord * scaler);
+  float scaledt = fract(texcoord * scaler);//calculate where in the stripe pattern the coordinate is
   float frac1 = clamp(scaledt/fuzz, 0.0, 1.0);
-  float frac2 = clamp((scaledt-width)/fuzz, 0.0, 1.0);
+  float frac2 = clamp((scaledt-width)/fuzz, 0.0, 1.0);//where the pixel is in relation to the transition between colours
 
-  frac1 = frac1*(1.0-frac2);
-  frac1 = frac1 * frac1 * (3.0-(2.0*frac1));
-  vec3 fragcolour = mix(backcolour, stripecolour, frac1);
+  frac1 = frac1*(1.0-frac2);//used to blend the two colours
+  frac1 = frac1 * frac1 * (3.0-(2.0*frac1));//hermite interpolation to blend colours
+  vec3 fragcolour = mix(backcolour, stripecolour, frac1);//mix the colours
 
-  fragcolour = fragcolour*diffusecolour + specularcolour;
+  fragcolour = fragcolour*diffusecolour + specularcolour;//apply specular
   colour = vec4(fragcolour, 1.0);
   // *********************************
 }

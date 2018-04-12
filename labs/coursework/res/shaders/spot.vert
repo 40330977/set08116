@@ -64,18 +64,18 @@ void main() {
   //tex_coord_out = tex_coord_in;
   
   vec3 ecpos = vec3(MV* vec4(position, 1.0));
-  vec3 tnorm = normalize(N*normal);
-  vec3 lightvec = normalize(light.position-ecpos);
+  vec3 tnorm = normalize(N*normal);//transformed normal
+  vec3 lightvec = normalize(light.position-ecpos);//light vector calculation
   vec3 viewvec = normalize(eye_pos-ecpos);
   vec3 hvec = normalize(viewvec+lightvec);
 
   float spec = clamp(dot(hvec, tnorm), 0.0, 1.0);
-  spec = pow(spec, 16.0);
+  spec = pow(spec, 16.0);//specular
 
   diffusecolour = light.light_colour.xyz * vec3(kd* dot(lightvec, tnorm));
-  diffusecolour = clamp(ambient + diffusecolour, 0.0, 1.0);
-  specularcolour = clamp((light.light_colour.xyz*vec3(mat.specular_reflection)*spec), 0.0, 1.0);
-  texcoord = tex_coord_in.t;
+  diffusecolour = clamp(ambient + diffusecolour, 0.0, 1.0);//calculate diffuse
+  specularcolour = clamp((light.light_colour.xyz*vec3(mat.specular_reflection)*spec), 0.0, 1.0);//calculate specular
+  texcoord = tex_coord_in.t;//pass out float of texture coordinate
 
   // *********************************
 }
