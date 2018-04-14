@@ -5,7 +5,8 @@ uniform sampler2D tex;
 
 // Our colour filter - calculates colour intensity
 //const vec3 intensity = vec3(0.314, 0.169, -0.09);
-const vec3 intensity = vec3(0.414, 0.469, -0.09);
+//const vec3 intensity = vec3(0.414, 0.469, -0.09);
+const vec3 intensity = vec3(0.714, 0.769, -0.09);
 
 // Incoming texture coordinate
 layout(location = 0) in vec2 tex_coord;

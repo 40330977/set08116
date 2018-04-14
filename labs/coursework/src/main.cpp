@@ -24,7 +24,8 @@ double cursor_y = 0.0;
 double xpos;
 double ypos;
 free_camera cam1;
-point_light light;
+//point_light light;
+directional_light light;
 frame_buffer frame;
 geometry screen_quad;
 
@@ -79,7 +80,7 @@ bool load_content() {
 	// - all shininess is 25
 	
 	meshes[0].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	meshes[0].get_material().set_diffuse(vec4(1.0f, 0.0f, 1.0f, 1.0f));
+	meshes[0].get_material().set_diffuse(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	meshes[0].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	meshes[0].get_material().set_shininess(25.0f);
 
@@ -98,20 +99,43 @@ bool load_content() {
 	meshes[3].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	meshes[3].get_material().set_shininess(25.0f);
 
+	meshes[4].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes[4].get_material().set_diffuse(vec4(1.0f, 1.0f, 0.0f, 1.0f));
+	meshes[4].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes[4].get_material().set_shininess(25.0f);
+
+	meshes[5].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes[5].get_material().set_diffuse(vec4(1.0f, 1.0f, 0.0f, 1.0f));
+	meshes[5].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes[5].get_material().set_shininess(25.0f);
+
+	meshes[6].get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	meshes[6].get_material().set_diffuse(vec4(1.0f, 1.0f, 0.0f, 1.0f));
+	meshes[6].get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	meshes[6].get_material().set_shininess(25.0f);
+
 	plane_mesh.get_material().set_emissive(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	plane_mesh.get_material().set_diffuse(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	plane_mesh.get_material().set_specular(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	plane_mesh.get_material().set_shininess(25.0f);
 
-	// Set lighting values, Position (-25, 10, -10)
-	light.set_position(vec3(-25.0f, 10.0f, -10.0f));
+	// ambient intensity (0.3, 0.3, 0.3)
+	light.set_ambient_intensity(vec4(0.3f, 0.3f, 0.3f, 1.0f));
 	// Light colour white
 	light.set_light_colour(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	// Set range to 20
-	light.set_range(20.0f);
-	light.set_constant_attenuation(1.0f);
-	light.set_linear_attenuation(1.0f);
-	light.set_quadratic_attenuation(1.0f);
+	// Light direction (1.0, 1.0, -1.0)
+	light.set_direction(vec3(-1.0f, 1.0f, -1.0f));
+	// Load in shaders
+
+	//// Set lighting values, Position (-25, 10, -10)
+	//light.set_position(vec3(-25.0f, 10.0f, -10.0f));
+	//// Light colour white
+	//light.set_light_colour(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	//// Set range to 20
+	//light.set_range(20.0f);
+	//light.set_constant_attenuation(1.0f);
+	//light.set_linear_attenuation(1.0f);
+	//light.set_quadratic_attenuation(1.0f);
 	
 	// Load texture
 	//tex = texture("C:/Users/40330977/Desktop/set08116/labs/coursework/res/textures/check_1.png");
@@ -125,15 +149,25 @@ bool load_content() {
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.vert", GL_VERTEX_SHADER);
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.frag", GL_FRAGMENT_SHADER);
 
-	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.vert", GL_VERTEX_SHADER);
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.vert", GL_VERTEX_SHADER);
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.frag", GL_FRAGMENT_SHADER);
-	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brickantialiased.frag", GL_FRAGMENT_SHADER);
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brickantialiased.frag", GL_FRAGMENT_SHADER);
 
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/lattice.vert", GL_VERTEX_SHADER);
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/lattice.frag", GL_FRAGMENT_SHADER);
 
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/pointstan.vert", GL_VERTEX_SHADER);
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/pointcombstripe.frag", GL_FRAGMENT_SHADER);
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/pointcombbrickaa.frag", GL_FRAGMENT_SHADER);
+
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/points.vert", GL_VERTEX_SHADER);
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/points.frag", GL_FRAGMENT_SHADER);
+
 	tex_eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/simple_texture.vert", GL_VERTEX_SHADER);
 	tex_eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/greyscale.frag", GL_FRAGMENT_SHADER);
+
+	/*tex_eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.vert", GL_VERTEX_SHADER);
+	tex_eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brickantialiased.frag", GL_FRAGMENT_SHADER);*/
 
   // Build effect
   eff.build();
@@ -245,6 +279,7 @@ bool update(float delta_time) {
 bool render() {
 
 	renderer::set_render_target(frame);
+	//renderer::set_render_target();
 	// Clear frame
 	renderer::clear();
 	
@@ -367,7 +402,7 @@ bool render() {
 	renderer::render(plane_mesh);
 	//renderer::render(teapot);
 
-	// Set render target back to the screen
+	 //Set render target back to the screen
 	renderer::set_render_target();
 	// Bind Tex effect
 	renderer::bind(tex_eff);
