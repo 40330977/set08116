@@ -83,7 +83,7 @@ use += (integral(pos+fw, bpct, mpct)-integral(pos, bpct, mpct))/fw;//integral of
 
 fragcolour = mix(mortar, brick, use.x*use.y);
 fragcolour*=lightintensity.xyz;
-
+fragcolour = fragcolour + specular.xyz;
 colour = vec4(fragcolour, 1.0);
 
 

@@ -125,6 +125,7 @@ bool load_content() {
 	light.set_light_colour(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	// Light direction (1.0, 1.0, -1.0)
 	light.set_direction(vec3(-1.0f, 1.0f, -1.0f));
+
 	// Load in shaders
 
 	//// Set lighting values, Position (-25, 10, -10)
@@ -146,19 +147,23 @@ bool load_content() {
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.vert", GL_VERTEX_SHADER);
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/multi-light.frag", GL_FRAGMENT_SHADER);
 
-	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.vert", GL_VERTEX_SHADER);
-	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/spot.frag", GL_FRAGMENT_SHADER);
+	//procedural stripe shaders
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/stripe1.vert", GL_VERTEX_SHADER);
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/stripe1.frag", GL_FRAGMENT_SHADER);
 
+	//procedural brick shaders + antialiased fragment shader
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.vert", GL_VERTEX_SHADER);
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.frag", GL_FRAGMENT_SHADER);
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brickantialiased.frag", GL_FRAGMENT_SHADER);
 
+	//lattice shaders
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/lattice.vert", GL_VERTEX_SHADER);
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/lattice.frag", GL_FRAGMENT_SHADER);
 
+	//phong procedural shaders
 	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/pointstan.vert", GL_VERTEX_SHADER);
-	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/pointcombstripe.frag", GL_FRAGMENT_SHADER);
-	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/pointcombbrickaa.frag", GL_FRAGMENT_SHADER);
+	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/phongstripe.frag", GL_FRAGMENT_SHADER);
+	eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/phongbrickaa.frag", GL_FRAGMENT_SHADER);
 
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/points.vert", GL_VERTEX_SHADER);
 	//eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/points.frag", GL_FRAGMENT_SHADER);
@@ -166,8 +171,7 @@ bool load_content() {
 	tex_eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/simple_texture.vert", GL_VERTEX_SHADER);
 	tex_eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/greyscale.frag", GL_FRAGMENT_SHADER);
 
-	/*tex_eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brick.vert", GL_VERTEX_SHADER);
-	tex_eff.add_shader("C:/Users/40330977/Desktop/set08116/labs/coursework/res/shaders/brickantialiased.frag", GL_FRAGMENT_SHADER);*/
+	
 
   // Build effect
   eff.build();
@@ -312,8 +316,7 @@ bool render() {
 	vec2 threshold = vec2(0.3, 0.3);
 	vec3 surface = vec3(0.5, 0.5, 0.5);
 
-	//vec3 sky = vec3(0.0, 0.0, 0.8);
-	//vec3 cloud = vec3(0.8, 0.8, 0.8);
+	
 	// Set the texture value for the shader here
 	glUniform1i(eff.get_uniform_location("tex"), 0);
 	// Find the lcoation for the MVP uniform
